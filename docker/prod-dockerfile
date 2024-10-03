@@ -1,0 +1,10 @@
+FROM node:20.17.0-alpine
+
+WORKDIR /api
+COPY . .
+RUN cd /api
+
+# 필요한 패키지 설치 및 dist 폴더 생성
+RUN npm install && npm run build
+
+CMD npm run start:prod
