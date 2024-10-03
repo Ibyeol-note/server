@@ -1,0 +1,57 @@
+services:
+    in_api:
+        container_name: api
+        build:
+            context: .
+            dockerfile: local-dockerfile
+        volumes:
+            - ./src:/api/src
+        restart: always
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+        depends_on:
+            in_db:
+                condition: service_healthy
+            redis-server:
+                condition: service_healthy
+        networks:
+            - local-network
+
+    in_db:
+        image: mysql:8.0
+        restart: always
+        container_name: db
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DATABASE_NAME}
+            MYSQL_USER: ${DATABASE_USERNAME}
+            MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+            TZ: Asia/Seoul
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
+        ports:
+            - ${DATABASE_PORT}:3306
+        networks:
+            - local-network
+
+    redis-server:
+        image: redis
+        container_name: redis-server
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        ports:
+            - "6379:6379"
+        networks:
+            - local-network
+
+volumes:
+    db:
+
+networks:
+    local-network:
+        driver: bridge
