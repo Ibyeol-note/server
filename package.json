@@ -21,7 +21,9 @@
     "docker:local": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env up",
     "docker:build": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env build",
     "docker:down": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env down",
-    "docker:exec": "docker exec -it api /bin/sh"
+    "docker:exec": "docker exec -it api /bin/sh",
+    "generate:prsima": "npx prisma generate --schema=./src/prisma/schema.prisma",
+    "migrate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
