@@ -5,7 +5,7 @@ services:
       context: ..
       dockerfile: ./docker/local-dockerfile
     volumes:
-      - ..:/src
+      - ..:/api
     restart: always
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
