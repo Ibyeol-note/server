@@ -18,9 +18,9 @@ jobs:
         id: aws-credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -30,89 +30,72 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          # 이름 바꾸기
-          ECR_REPOSITORY: ibyeolnote
+          ECR_REPOSITORY: ibyeolnote/prod
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f docker/prod-dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      - name: Deploy to EC2
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ibyeolnote
-          IMAGE_TAG: ${{ github.sha }}
-          EC2_PUBLIC_IP: ${{ secrets.PROD_EC2_PUBLIC_IP }} # Add your EC2 public IP in secrets
-        run: |
-          # SSH into EC2 instance and pull the new image
-          ssh -o StrictHostKeyChecking=no -i ./ibyeolnote-develop.pem ec2-user@${{ env.EC2_PUBLIC_IP }} << EOF
-            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
-            docker stop $(docker ps -q --filter ancestor=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG) || true
-            docker rm $(docker ps -a -q --filter ancestor=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG) || true
-            docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            docker run -d -p 3000:3000 $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          EOF
-
       # APP Runner로 전환 시
-      # - name: Deploy to App Runner
-      #   id: deploy-apprunner
-      #   uses: awslabs/amazon-app-runner-deploy@main
-      #   env:
-      #     SERVER_PORT: ${{ secrets.PROD_SERVER_PORT }}
-      #     DATABASE_TYPE: ${{ secrets.PROD_DATABASE_TYPE }}
-      #     DATABASE_HOST: ${{ secrets.PROD_DATABASE_HOST }}
-      #     DATABASE_PORT: ${{ secrets.PROD_DATABASE_PORT }}
-      #     DATABASE_USERNAME: ${{ secrets.PROD_DATABASE_USERNAME }}
-      #     DATABASE_PASSWORD: ${{ secrets.PROD_DATABASE_PASSWORD }}
-      #     DATABASE_NAME: ${{ secrets.PROD_DATABASE_NAME }}
-      #     DATABASE_SYNC: ${{ secrets.PROD_DATABASE_SYNC }}
-      #     DATABASE_CRT: ${{ secrets.PROD_DATABASE_CRT }}
-      #     AWS_ACCESS_KEY: ${{ secrets.PROD_AWS_ACCESS_KEY}}
-      #     AWS_SECRET_KEY: ${{ secrets.PROD_AWS_SECRET_KEY}}
-      #     AWS_REGION: ap-northeast-1
-      #     S3_BUCKET_NAME: ${{ secrets.PROD_S3_BUCKET_NAME}}
-      #     JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
-      #     JWT_ACCESS_EXPIRES: ${{ secrets.JWT_ACCESS_EXPIRES }}
-      #     JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
-      #     JWT_REFRESH_EXPIRES: ${{ secrets.JWT_REFRESH_EXPIRES }}
-      #     ALIGO_API_KEY: ${{ secrets.ALIGO_API_KEY }}
-      #     ALIGO_USER_ID: ${{ secrets.ALIGO_USER_ID }}
-      #     ALIGO_SENDER: ${{ secrets.ALIGO_SENDER }}
-      #     REDIS_HOST: ${{ secrets.PROD_REDIS_HOST }}
+      - name: Deploy to App Runner
+        id: deploy-apprunner
+        uses: awslabs/amazon-app-runner-deploy@main
+        env:
+          SERVER_PORT: ${{ secrets.PROD_SERVER_PORT }}
+          DATABASE_TYPE: ${{ secrets.PROD_DATABASE_TYPE }}
+          DATABASE_HOST: ${{ secrets.PROD_DATABASE_HOST }}
+          DATABASE_PORT: ${{ secrets.PROD_DATABASE_PORT }}
+          DATABASE_USERNAME: ${{ secrets.PROD_DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.PROD_DATABASE_PASSWORD }}
+          DATABASE_NAME: ${{ secrets.PROD_DATABASE_NAME }}
+          DATABASE_SYNC: ${{ secrets.PROD_DATABASE_SYNC }}
+          DATABASE_CRT: ${{ secrets.PROD_DATABASE_CRT }}
+          AWS_ACCESS_KEY: ${{ secrets.PROD_AWS_ACCESS_KEY}}
+          AWS_SECRET_KEY: ${{ secrets.PROD_AWS_SECRET_KEY}}
+          AWS_REGION: ap-northeast-1
+          S3_BUCKET_NAME: ${{ secrets.PROD_S3_BUCKET_NAME}}
+          JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
+          JWT_ACCESS_EXPIRES: ${{ secrets.JWT_ACCESS_EXPIRES }}
+          JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
+          JWT_REFRESH_EXPIRES: ${{ secrets.JWT_REFRESH_EXPIRES }}
+          ALIGO_API_KEY: ${{ secrets.ALIGO_API_KEY }}
+          ALIGO_USER_ID: ${{ secrets.ALIGO_USER_ID }}
+          ALIGO_SENDER: ${{ secrets.ALIGO_SENDER }}
+          REDIS_HOST: ${{ secrets.PROD_REDIS_HOST }}
 
-      #   with:
-      #     service: prod-ibyeolnote-api-server
-      #     image: ${{ steps.build-image.outputs.image }}
-      #     access-role-arn: ${{ secrets.PROD_ROLE_ARN }}
-      #     runtime: NODEJS_16
-      #     region: ap-northeast-1
-      #     cpu: 1
-      #     memory: 2
-      #     port: 3000
-      #     copy-env-vars: |
-      #       SERVER_PORT
-      #       DATABASE_TYPE
-      #       DATABASE_HOST
-      #       DATABASE_PORT
-      #       DATABASE_USERNAME
-      #       DATABASE_PASSWORD
-      #       DATABASE_NAME
-      #       DATABASE_SYNC
-      #       DATABASE_CRT
-      #       AWS_ACCESS_KEY
-      #       AWS_SECRET_KEY
-      #       AWS_REGION
-      #       S3_BUCKET_NAME
-      #       JWT_ACCESS_SECRET
-      #       JWT_ACCESS_EXPIRES
-      #       JWT_REFRESH_SECRET
-      #       JWT_REFRESH_EXPIRES
-      #       ALIGO_API_KEY
-      #       ALIGO_USER_ID
-      #       ALIGO_SENDER
-      #       REDIS_HOST
-      #     wait-for-service-stability: true
+        with:
+          service: prod-ibyeolnote-api-server
+          image: ${{ steps.build-image.outputs.image }}
+          access-role-arn: ${{ secrets.PROD_ROLE_ARN }}
+          runtime: NODEJS_20
+          region: ap-northeast-1
+          cpu: 1
+          memory: 2
+          port: 3000
+          copy-env-vars: |
+            SERVER_PORT
+            DATABASE_TYPE
+            DATABASE_HOST
+            DATABASE_PORT
+            DATABASE_USERNAME
+            DATABASE_PASSWORD
+            DATABASE_NAME
+            DATABASE_SYNC
+            DATABASE_CRT
+            AWS_ACCESS_KEY
+            AWS_SECRET_KEY
+            AWS_REGION
+            S3_BUCKET_NAME
+            JWT_ACCESS_SECRET
+            JWT_ACCESS_EXPIRES
+            JWT_REFRESH_SECRET
+            JWT_REFRESH_EXPIRES
+            ALIGO_API_KEY
+            ALIGO_USER_ID
+            ALIGO_SENDER
+            REDIS_HOST
+          wait-for-service-stability: true
 
-      # - name: App Runner output
-      #   run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}"
+      - name: App Runner output
+        run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}"
