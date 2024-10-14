@@ -23,10 +23,35 @@ model User {
   birthdayType   String?        @db.VarChar(6)
   gender         String?        @db.VarChar(6)
   registrationAt DateTime       @db.DateTime
-  loginType           LoginType
-  // userProfile    UserProfile?
-  // posts          Post[]
+  loginType      LoginType
+  userProfile    UserProfile?
+  posts          Post[]
   // comments       Comment[]
+}
+
+model UserProfile {
+  userId   Int     @id
+  nickname String  @db.VarChar(20)
+  imageUrl String? @db.Text
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @db.DateTime
+  updatedAt  DateTime @db.DateTime
+  userId     Int?
+  categoryId Int?
+  labelId    Int?
+  title      String   @db.VarChar(255)
+  content    String   @db.Text
+  isDeleted  Boolean  @default(false)
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  // category        Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  // postMeta        PostMeta?
+  // Comment         Comment[]
 }
 
 enum LoginType {
