@@ -17,23 +17,23 @@ datasource db {
 
 model User {
   id             Int            @id @default(autoincrement())
-  email          String         @db.VarChar(50)
+  nickname       String         @db.VarChar(20)
+  gender         String         @db.VarChar(6)
+  email          String?        @db.VarChar(50)
   ageRange       String?        @db.VarChar(10)
   birthday       String?        @db.VarChar(6)
   birthdayType   String?        @db.VarChar(6)
-  gender         String?        @db.VarChar(6)
   registrationAt DateTime       @db.DateTime
   loginType      LoginType
-  userProfile    UserProfile?
+  userProfile    UserImage?
   refreshTokens  RefreshToken?
   
   posts          Post[]
    // comments       Comment[]
 }
 
-model UserProfile {
+model UserImage {
   userId   Int     @id
-  nickname String  @db.VarChar(20)
   imageUrl String? @db.Text
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
