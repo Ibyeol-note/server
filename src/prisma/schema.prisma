@@ -5,13 +5,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator nestgraphql {
-  provider = "prisma-nestjs-graphql"
-  output   = "./@generated/grpahql/prisma-nestjs-graphql"
-  fields_Validator_from  = "class-validator"
-  fields_Validator_input = true
-}
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
