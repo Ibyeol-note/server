@@ -1,0 +1,31 @@
+cat > .openapi-generator-ignore << EOL
+# 컨트롤러 제외
+**/*controller.ts
+**/*.controller.ts
+
+# configuration 관련 파일 제외
+**/configuration.ts
+**/*configuration*.ts
+
+# api 모듈 파일 제외
+**/*.module.ts
+
+**/.openapi-generator/*
+
+**/api.ts
+
+**/.openapi-generator-ignore
+**/index.ts
+**/variables.ts
+
+
+# 기타 필요없는 파일들 제외
+**/*.spec.ts
+**/*.jest.config
+**/git_push.sh
+**/README.md
+**/package.json
+**/tsconfig.json
+**/.gitignore
+**/.npmignore
+EOL
