@@ -1,0 +1,16 @@
+{{#models}}
+{{#model}}
+import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+
+export class {{classname}} {
+{{#vars}}
+    @ApiProperty({{#description}}{ description: '{{{description}}}' }{{/description}})
+    {{#required}}@IsNotEmpty(){{/required}}{{^required}}@IsOptional(){{/required}}
+    {{#isString}}@IsString(){{/isString}}{{#isInteger}}@IsNumber(){{/isInteger}}{{#isLong}}@IsNumber(){{/isLong}}{{#isFloat}}@IsNumber(){{/isFloat}}{{#isDouble}}@IsNumber(){{/isDouble}}{{#isBoolean}}@IsBoolean(){{/isBoolean}}
+    {{name}}{{^required}}?{{/required}}: {{{dataType}}};
+
+{{/vars}}
+}
+{{/model}}
+{{/models}}
