@@ -23,7 +23,8 @@
     "docker:down": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env down",
     "docker:exec": "docker exec -it api /bin/sh",
     "generate:prsima": "npx prisma generate --schema=./src/prisma/schema.prisma",
-    "migrate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init"
+    "migrate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init",
+    "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ./openapi/template --ignore-file-override ./openapi/ignore/.openapi-generator-ignore"
   },
   "dependencies": {
     "@nestjs/apollo": "^12.2.0",
