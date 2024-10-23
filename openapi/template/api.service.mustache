@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
 {{#models}}
-import { {{classname}} } from './{{classname}}.dto';
+import { {{classname}} } from './{{classname}}';
 {{/models}}
 
 @Injectable()
-export class {{classname}} {
-  {{#operations}}
-  {{#operation}}
-  {{operationId}}({{#allParams}}{{baseName}}: {{dataType}}{{#hasMore}}, {{/hasMore}}{{/allParams}}): Promise<{{returnType}}> {
-    // Business Logics
-    return {
-      // Return Data
-    };
-  }
-  {{/operation}}
-  {{/operations}}
+export class {{baseName}} {
+{{#operations}}
+{{#operation}}
+    {{operationId}}(
+        {{#allParams}}
+        {{paramName}}: {{dataType}}{{#hasMore}},{{/hasMore}}
+        {{/allParams}}
+    ): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}> {
+        // Business Logics
+        return {
+            // Return Data
+        };
+    }
+
+{{/operation}}
+{{/operations}}
 }
