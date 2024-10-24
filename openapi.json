@@ -12,7 +12,7 @@
     }
   ],
   "paths": {
-    "/users": {
+    "/user": {
       "post": {
         "summary": "유저 회원가입",
         "operationId": "createUser",
@@ -44,7 +44,7 @@
         }
       }
     },
-    "/users/login": {
+    "/user/login": {
       "post": {
         "summary": "유저 로그인",
         "operationId": "loginUser",
@@ -76,7 +76,7 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/user/{id}": {
       "get": {
         "summary": "유저 정보 조회",
         "operationId": "getUserById",
