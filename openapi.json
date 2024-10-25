@@ -174,7 +174,7 @@
         }
       }
     },
-    "/posts": {
+    "/post": {
       "get": {
         "summary": "게시글 목록 조회",
         "operationId": "getPosts",
@@ -248,7 +248,7 @@
         }
       }
     },
-    "/posts/{postId}": {
+    "/post/{postId}": {
       "get": {
         "summary": "특정 게시글 조회",
         "operationId": "getPostById",
