@@ -24,7 +24,7 @@
     "docker:exec": "docker exec -it api /bin/sh",
     "generate:prsima": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "migrate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init",
-    "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ./openapi/template --ignore-file-override ./openapi/ignore/.openapi-generator-ignore"
+    "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ./openapi/template --ignore-file-override ./openapi/ignore/.openapi-generator-ignore --skip-validate-spec"
   },
   "dependencies": {
     "@nestjs/apollo": "^12.2.0",
@@ -36,7 +36,6 @@
     "@nestjs/swagger": "^7.4.2",
     "@prisma/client": "^5.20.0",
     "apollo-server-express": "^3.13.0",
-    "class-transformer": "^0.5.1",
     "dotenv-cli": "^7.4.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
