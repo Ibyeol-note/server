@@ -1,35 +1,20 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { tags } from "typia";
 
-export class Post {
-    @ApiProperty()
-    @IsOptional()
-    @IsNumber()
+export interface Post { 
+    
     id?: number;
-
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+    
     title?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+    
     content?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+    
     author?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    
-    createdAt?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    
-    updatedAt?: string;
-
+    /** 게시글 상태 */
+    status?: string;
+    /** 게시글 생성 날짜 */
+    createdAt?: string & tags.Format<"date-time">;
+    /** 게시글 수정 날짜 */
+    updatedAt?: string & tags.Format<"date-time">;
 }
+export type StatusEnum = "published" | "draft" | "archived" | ;
+

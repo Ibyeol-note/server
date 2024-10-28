@@ -1,15 +1,9 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { tags } from "typia";
 
-export class LoginDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+export interface LoginDto { 
+    
     username: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+    
     password: string;
-
 }
+

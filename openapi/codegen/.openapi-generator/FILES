@@ -1,4 +1,3 @@
-api/posts.service.ts
 api/users.service.ts
 model/createPostDto.ts
 model/createUserDto.ts

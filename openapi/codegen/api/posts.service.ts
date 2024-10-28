@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { model/createPostDto } from './model/createPostDto';
-import { model/post } from './model/post';
-import { model/updatePostDto } from './model/updatePostDto';
 
 @Injectable()
-export class PostsService {
+export class Posts {
     createPost(
         createPostDto: CreatePostDto
     ): Promise<Post> {

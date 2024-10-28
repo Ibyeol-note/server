@@ -1,10 +1,10 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { tags } from "typia";
 
-export class LoginResponse {
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+export interface LoginResponse { 
+    
     accessToken?: string;
-
+    
+    tokenType?: string;
 }
+export type TokenTypeEnum = "Bearer" | "JWT" | ;
+

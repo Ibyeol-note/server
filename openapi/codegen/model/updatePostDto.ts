@@ -1,15 +1,12 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { tags } from "typia";
 
-export class UpdatePostDto {
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+export interface UpdatePostDto { 
+    
     title?: string;
-
-    @ApiProperty()
-    @IsOptional()
-    @IsString()
+    
     content?: string;
-
+    /** 게시글 상태 업데이트 */
+    status?: string;
 }
+export type StatusEnum = "published" | "draft" | "archived" | ;
+

@@ -1,20 +1,14 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, IsNotEmpty } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { tags } from "typia";
 
-export class CreateUserDto {
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+export interface CreateUserDto { 
+    
     username: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+    
     email: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+    
     password: string;
-
+    
+    role: string;
 }
+export type RoleEnum = "admin" | "user" | "guest" | ;
+
