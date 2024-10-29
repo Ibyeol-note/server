@@ -22,8 +22,10 @@
     "docker:build": "docker-compose -f docker/local-compose.yml -p ibyeol-note --env-file src/global/config/envs/.local.env build",
     "docker:down": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env down",
     "docker:exec": "docker exec -it api /bin/sh",
-    "generate:prsima": "npx prisma generate --schema=./src/prisma/schema.prisma",
-    "migrate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init",
+    "dbpush:dev": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma db push --schema=./src/prisma/schema.prisma",
+    "migrate:dev": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init",
+    "migrate:prod": "dotenv -e ./src/global/config/envs/.prod.env -- npx prisma migrate dev --name init",
+    "generate:prsima": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma generate --schema=./src/prisma/schema.prisma",
     "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ./openapi/template --ignore-file-override ./openapi/ignore/.openapi-generator-ignore --skip-validate-spec"
   },
   "dependencies": {
