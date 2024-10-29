@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly authService: AuthService) {}
+
   create(createUserDto: CreateUserDto) {
+    this.authService.somaAPI();
     return 'This action adds a new user';
   }
 
