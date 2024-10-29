@@ -10,62 +10,171 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator markdown {
+  provider = "prisma-markdown"
+  output   = "./ERD.md"
+  title    = "IbyeolNote"
+}
+
 model User {
-  id             Int            @id @default(autoincrement())
-  nickname       String         @db.VarChar(20)
-  gender         String         @db.VarChar(6)
-  email          String?        @db.VarChar(50)
-  ageRange       String?        @db.VarChar(10)
-  birthday       String?        @db.VarChar(6)
-  birthdayType   String?        @db.VarChar(6)
-  registrationAt DateTime       @db.DateTime
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+
+  /// @format email
+  /// @minLength 5
+  /// @maxLength 40
+  email          String?   @unique
+  /// @minLength 1
+  /// @maxLength 5
+  gender         String    @db.VarChar(5)
+  /// @minLength 2
+  /// @maxLength 50
+  name           String?   @db.VarChar(50)
+  /// @format date
+  birthday       String?
+  /// @minLength 1
+  /// @maxLength 10
+  birthdayType   String?
   loginType      LoginType
-  userProfile    UserImage?
-  refreshTokens  RefreshToken?
-  
-  posts          Post[]
-   // comments       Comment[]
+  registrationAt DateTime  @default(now())
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  profiles      UserProfile[]
+  images        UserImage[]
+  refreshTokens RefreshToken[]
+  posts         Post[]
+  postViews     PostView[]
+  postLikes     PostLike[]
+}
+
+model UserProfile {
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+
+  /// @minLength 2
+  /// @maxLength 20
+  nickname             String               @db.VarChar(20)
+  /// @format url
+  /// @minLength 5
+  /// @maxLength 50
+  instagram            String?              @db.VarChar(50)
+  relationshipDecision RelationshipDecision
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model UserImage {
-  userId   Int     @id
-  imageUrl String? @db.Text
+  id Int @id @default(autoincrement()) @db.UnsignedInt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// @format url
+  /// @minLength 5
+  /// @maxLength 255
+  imageUrl String @db.VarChar(255)
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model RefreshToken {
-  id         String   @id @default(uuid())
-  token      String   @unique
-  userId     Int      @unique
-  deviceInfo String? // 디바이스 정보 저장 (예: "웹 브라우저", "iOS 앱", "Android 앱")
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id Int @id @default(autoincrement()) @db.UnsignedInt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// @minLength 10
+  /// @maxLength 255
+  token      String     @unique @db.VarChar(255)
+  deviceInfo DeviceInfo
+  expiresAt  DateTime
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?
+
+  // Relation
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model Post {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @db.DateTime
-  updatedAt  DateTime @db.DateTime
-  userId     Int?
-  categoryId Int?
-  labelId    Int?
-  title      String   @db.VarChar(255)
-  content    String   @db.Text
-  isDeleted  Boolean  @default(false)
+  id String @id @default(uuid())
 
-  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  // category        Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  // postMeta        PostMeta?
-  // Comment         Comment[]
+  /// @maxLength 500
+  content   String?   @db.VarChar(500)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  userId Int
+  user   User       @relation(fields: [userId], references: [id])
+  views  PostView[]
+  likes  PostLike[]
+}
+
+model PostView {
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+
+  createdAt DateTime @default(now())
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  postId String
+  userId Int
+  post   Post   @relation(fields: [postId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model PostLike {
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+
+  createdAt DateTime @default(now())
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  postId String
+  userId Int
+  post   Post   @relation(fields: [postId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NOT_CHOICE
 }
 
 enum LoginType {
-  naver
-  kakao
-  google
-  apple
+  NAVER
+  KAKAO
+  GOOGLE
+  APPLE
+}
+
+enum RelationshipDecision {
+  HOLD_ON
+  LET_GO
+}
+
+enum DeviceInfo {
+  WEB
+  IOS
+  ANDROID
 }
