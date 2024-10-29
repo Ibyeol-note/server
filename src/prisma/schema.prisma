@@ -12,20 +12,20 @@ datasource db {
 
 generator markdown {
   provider = "prisma-markdown"
-  output   = "./ERD.md"
+  output   = "../../ERD.md"
   title    = "IbyeolNote"
 }
 
 model User {
-  id Int @id @default(autoincrement()) @db.UnsignedInt
+  id Int @id @default(autoincrement())
 
   /// @format email
   /// @minLength 5
   /// @maxLength 40
   email          String?   @unique
   /// @minLength 1
-  /// @maxLength 5
-  gender         String    @db.VarChar(5)
+  /// @maxLength 10
+  gender         String    @db.VarChar(10)
   /// @minLength 2
   /// @maxLength 50
   name           String?   @db.VarChar(50)
@@ -51,7 +51,7 @@ model User {
 }
 
 model UserProfile {
-  id Int @id @default(autoincrement()) @db.UnsignedInt
+  id Int @id @default(autoincrement())
 
   /// @minLength 2
   /// @maxLength 20
@@ -72,7 +72,7 @@ model UserProfile {
 }
 
 model UserImage {
-  id Int @id @default(autoincrement()) @db.UnsignedInt
+  id Int @id @default(autoincrement())
 
   /// @format url
   /// @minLength 5
