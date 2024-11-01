@@ -2,13 +2,18 @@ import { tags } from "typia";
 
 export interface CreateUserDto { 
     
-    username: string;
-    
     email: string;
     
-    password: string;
+    gender: string;
     
-    role: string;
+    name?: string;
+    
+    birthday?: string & tags.Format<"date">;
+    
+    birthdayType?: string;
+    
+    loginType: string;
 }
-export type RoleEnum = "admin" | "user" | "guest" | ;
+export type GenderEnum = "MALE" | "FEMALE" | "NOT_CHOICE" | ;
+export type LoginTypeEnum = "NAVER" | "KAKAO" | "GOOGLE" | "APPLE" | ;
 

@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class Users {
     userPost(
         createUserDto: CreateUserDto
-    ): Promise<void> {
+    ): Promise<User> {
         // Business Logics
         return {
             // Return Data
