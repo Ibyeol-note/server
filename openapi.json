@@ -1,16 +1,10 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "게시판 및 유저 API",
+    "title": "IbyeolNote",
     "version": "1.0.0",
-    "description": "게시판과 유저 관리 서비스 API"
+    "description": "API documentation for IbyeolNote"
   },
-  "servers": [
-    {
-      "url": "https://api.example.com/v1",
-      "description": "기본 서버"
-    }
-  ],
   "components": {
     "schemas": {
       "User": {
@@ -20,107 +14,138 @@
             "type": "integer",
             "example": 1
           },
-          "username": {
-            "type": "string",
-            "example": "user01"
-          },
           "email": {
             "type": "string",
+            "format": "email",
             "example": "user01@example.com"
           },
-          "status": {
+          "gender": {
             "type": "string",
-            "enum": ["active", "inactive", "suspended"],
-            "description": "유저의 현재 상태",
-            "example": "active"
+            "enum": ["MALE", "FEMALE", "NOT_CHOICE"],
+            "example": "MALE"
           },
-          "role": {
+          "name": {
             "type": "string",
-            "enum": ["admin", "user", "guest"],
-            "description": "유저의 역할",
-            "example": "user"
+            "example": "John Doe"
           },
-          "createdAt": {
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-01-01"
+          },
+          "birthdayType": {
+            "type": "string",
+            "example": "SOLAR"
+          },
+          "loginType": {
+            "type": "string",
+            "enum": ["NAVER", "KAKAO", "GOOGLE", "APPLE"],
+            "example": "GOOGLE"
+          },
+          "registrationAt": {
             "type": "string",
             "format": "date-time",
-            "description": "유저 생성 날짜",
             "example": "2024-10-22T08:42:00Z"
           },
-          "updatedAt": {
+          "isDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "deletedAt": {
             "type": "string",
             "format": "date-time",
-            "description": "유저 정보 수정 날짜",
-            "example": "2024-10-23T09:30:00Z"
+            "nullable": true,
+            "example": null
           }
         }
       },
       "CreateUserDto": {
         "type": "object",
-        "required": ["username", "email", "password", "role"],
+        "required": ["email", "gender", "loginType"],
         "properties": {
-          "username": {
-            "type": "string",
-            "example": "user01"
-          },
           "email": {
             "type": "string",
             "example": "user01@example.com"
           },
-          "password": {
+          "gender": {
             "type": "string",
-            "example": "password123"
+            "enum": ["MALE", "FEMALE", "NOT_CHOICE"],
+            "example": "FEMALE"
           },
-          "role": {
+          "name": {
             "type": "string",
-            "enum": ["admin", "user", "guest"],
-            "example": "user"
+            "example": "Jane Doe"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "1990-05-15"
+          },
+          "birthdayType": {
+            "type": "string",
+            "example": "LUNAR"
+          },
+          "loginType": {
+            "type": "string",
+            "enum": ["NAVER", "KAKAO", "GOOGLE", "APPLE"],
+            "example": "APPLE"
           }
         }
       },
-      "UpdateUserDto": {
+      "UserProfile": {
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string",
-            "example": "newemail@example.com"
+          "id": {
+            "type": "integer",
+            "example": 1
           },
-          "password": {
+          "nickname": {
             "type": "string",
-            "example": "newpassword123"
+            "example": "coolnickname"
           },
-          "status": {
+          "instagram": {
             "type": "string",
-            "enum": ["active", "inactive", "suspended"],
-            "description": "유저 상태 업데이트",
-            "example": "active"
+            "format": "url",
+            "example": "https://instagram.com/coolnickname"
+          },
+          "relationshipDecision": {
+            "type": "string",
+            "enum": ["HOLD_ON", "LET_GO"],
+            "example": "LET_GO"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": null
           }
         }
       },
-      "LoginDto": {
-        "type": "object",
-        "required": ["username", "password"],
-        "properties": {
-          "username": {
-            "type": "string",
-            "example": "user01"
-          },
-          "password": {
-            "type": "string",
-            "example": "password123"
-          }
-        }
-      },
-      "LoginResponse": {
+      "UserImage": {
         "type": "object",
         "properties": {
-          "accessToken": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          "id": {
+            "type": "integer",
+            "example": 1
           },
-          "tokenType": {
+          "imageUrl": {
             "type": "string",
-            "enum": ["Bearer", "JWT"],
-            "example": "Bearer"
+            "format": "url",
+            "example": "https://example.com/image.jpg"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": null
           }
         }
       },
@@ -128,81 +153,102 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "title": {
             "type": "string",
-            "example": "첫 번째 게시글"
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
           },
           "content": {
             "type": "string",
-            "example": "게시글 내용입니다."
-          },
-          "author": {
-            "type": "string",
-            "example": "작성자"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["published", "draft", "archived"],
-            "description": "게시글 상태",
-            "example": "published"
+            "example": "This is a post content"
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "description": "게시글 생성 날짜",
             "example": "2024-10-22T08:42:00Z"
           },
           "updatedAt": {
             "type": "string",
             "format": "date-time",
-            "description": "게시글 수정 날짜",
+            "nullable": true,
             "example": "2024-10-23T09:00:00Z"
+          },
+          "isDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": null
           }
         }
       },
       "CreatePostDto": {
         "type": "object",
-        "required": ["title", "content", "author", "status"],
+        "required": ["content"],
         "properties": {
-          "title": {
-            "type": "string",
-            "example": "새 게시글 제목"
-          },
           "content": {
             "type": "string",
-            "example": "게시글 내용"
-          },
-          "author": {
-            "type": "string",
-            "example": "작성자"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["published", "draft", "archived"],
-            "description": "게시글 상태",
-            "example": "draft"
+            "example": "New post content"
           }
         }
       },
-      "UpdatePostDto": {
+      "PostView": {
         "type": "object",
         "properties": {
-          "title": {
-            "type": "string",
-            "example": "수정된 게시글 제목"
+          "id": {
+            "type": "integer",
+            "example": 1
           },
-          "content": {
+          "createdAt": {
             "type": "string",
-            "example": "수정된 게시글 내용"
+            "format": "date-time",
+            "example": "2024-10-22T08:42:00Z"
           },
-          "status": {
+          "isDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "deletedAt": {
             "type": "string",
-            "enum": ["published", "draft", "archived"],
-            "description": "게시글 상태 업데이트",
-            "example": "archived"
+            "format": "date-time",
+            "nullable": true,
+            "example": null
+          }
+        }
+      },
+      "RefreshToken": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "deviceInfo": {
+            "type": "string",
+            "enum": ["WEB", "IOS", "ANDROID"],
+            "example": "IOS"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-12-31T23:59:59Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-22T08:42:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2024-10-23T09:30:00Z"
           }
         }
       }
@@ -211,7 +257,7 @@
   "paths": {
     "/user": {
       "post": {
-        "summary": "유저 회원가입",
+        "summary": "Create a new user",
         "tags": ["Users"],
         "requestBody": {
           "required": true,
@@ -225,10 +271,40 @@
         },
         "responses": {
           "201": {
-            "description": "유저 생성 성공",
+            "description": "User successfully created",
             "content": {
               "application/json": {
-                "$ref": "#/components/schemas/User"
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post": {
+      "post": {
+        "summary": "Create a new post",
+        "tags": ["Posts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
               }
             }
           }
