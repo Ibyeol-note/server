@@ -42,6 +42,7 @@
     "dotenv-cli": "^7.4.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.1",
     "typia": "^6.11.3"
   },
   "devDependencies": {
