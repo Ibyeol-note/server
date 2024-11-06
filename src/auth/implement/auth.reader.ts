@@ -7,7 +7,7 @@ import { KakaoUser } from '../interface/kakao-user';
 @Injectable()
 export class AuthReader {
   constructor(
-    private readonly prismaService: PrismaService,
+    // private readonly prismaService: PrismaService,
     private readonly httpService: HttpService,
   ) {}
 
