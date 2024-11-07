@@ -3,6 +3,5 @@ FROM node:20.17.0-alpine
 WORKDIR /api
 COPY . .
 RUN cd /api
-RUN npm install
-RUN npm run generate:prsima
+RUN npm install && npm run generate:prsima
 CMD npm run start:stage
