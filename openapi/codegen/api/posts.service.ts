@@ -11,4 +11,13 @@ export class Posts {
         };
     }
 
+    postPut(
+        updatePostDto: UpdatePostDto
+    ): Promise<Post> {
+        // Business Logics
+        return {
+            // Return Data
+        };
+    }
+
 }

@@ -1,11 +1,7 @@
+api/auth.service.ts
 api/posts.service.ts
-api/users.service.ts
 model/createPostDto.ts
-model/createUserDto.ts
 model/models.ts
 model/post.ts
-model/postView.ts
-model/refreshToken.ts
-model/user.ts
-model/userImage.ts
-model/userProfile.ts
+model/successLogin.ts
+model/updatePostDto.ts
