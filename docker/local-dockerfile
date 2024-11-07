@@ -4,6 +4,6 @@ WORKDIR /api
 
 COPY .. .
 
-RUN npm install && npm run generate:prsima
+RUN npm install && npm run generate:prisma
 
 CMD npm run start:local
