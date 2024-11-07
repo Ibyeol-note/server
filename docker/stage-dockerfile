@@ -4,4 +4,5 @@ WORKDIR /api
 COPY . .
 RUN cd /api
 RUN npm install
+RUN npm run generate:prsima
 CMD npm run start:stage
