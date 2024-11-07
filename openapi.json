@@ -6,142 +6,38 @@
     "description": "API documentation for IbyeolNote"
   },
   "components": {
+    "parameters": {
+      "LoginMehtod": {
+        "name": "LoginMehtod",
+        "in": "path",
+        "required": true,
+        "description": "로그인 방법",
+        "schema": {
+          "type": "string",
+          "enum": ["NAVER", "KAKAO", "GOOGLE", "APPLE"],
+          "example": "KAKAO"
+        }
+      }
+    },
     "schemas": {
-      "User": {
+      "SuccessLogin": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "email": {
+          "accessToken": {
             "type": "string",
-            "format": "email",
-            "example": "user01@example.com"
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
           },
-          "gender": {
+          "refreshToken": {
             "type": "string",
-            "enum": ["MALE", "FEMALE", "NOT_CHOICE"],
-            "example": "MALE"
+            "example": "This is a post content"
           },
-          "name": {
-            "type": "string",
-            "example": "John Doe"
-          },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "1990-01-01"
-          },
-          "birthdayType": {
-            "type": "string",
-            "example": "SOLAR"
-          },
-          "loginType": {
-            "type": "string",
-            "enum": ["NAVER", "KAKAO", "GOOGLE", "APPLE"],
-            "example": "GOOGLE"
-          },
-          "registrationAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-10-22T08:42:00Z"
-          },
-          "isDeleted": {
-            "type": "boolean",
-            "example": false
-          },
-          "deletedAt": {
+          "accessTokenExp": {
             "type": "string",
             "format": "date-time",
             "nullable": true,
-            "example": null
-          }
-        }
-      },
-      "CreateUserDto": {
-        "type": "object",
-        "required": ["email", "gender", "loginType"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "example": "user01@example.com"
+            "example": "2024-10-23T09:00:00Z"
           },
-          "gender": {
-            "type": "string",
-            "enum": ["MALE", "FEMALE", "NOT_CHOICE"],
-            "example": "FEMALE"
-          },
-          "name": {
-            "type": "string",
-            "example": "Jane Doe"
-          },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "1990-05-15"
-          },
-          "birthdayType": {
-            "type": "string",
-            "example": "LUNAR"
-          },
-          "loginType": {
-            "type": "string",
-            "enum": ["NAVER", "KAKAO", "GOOGLE", "APPLE"],
-            "example": "APPLE"
-          }
-        }
-      },
-      "UserProfile": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "nickname": {
-            "type": "string",
-            "example": "coolnickname"
-          },
-          "instagram": {
-            "type": "string",
-            "format": "url",
-            "example": "https://instagram.com/coolnickname"
-          },
-          "relationshipDecision": {
-            "type": "string",
-            "enum": ["HOLD_ON", "LET_GO"],
-            "example": "LET_GO"
-          },
-          "isDeleted": {
-            "type": "boolean",
-            "example": false
-          },
-          "deletedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true,
-            "example": null
-          }
-        }
-      },
-      "UserImage": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "imageUrl": {
-            "type": "string",
-            "format": "url",
-            "example": "https://example.com/image.jpg"
-          },
-          "isDeleted": {
-            "type": "boolean",
-            "example": false
-          },
-          "deletedAt": {
+          "refreshTokenExp": {
             "type": "string",
             "format": "date-time",
             "nullable": true,
@@ -194,88 +90,41 @@
           }
         }
       },
-      "PostView": {
+      "UpdatePostDto": {
         "type": "object",
+        "required": ["content"],
         "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "createdAt": {
+          "title": {
             "type": "string",
-            "format": "date-time",
-            "example": "2024-10-22T08:42:00Z"
+            "required": false,
+            "example": "게시글 제목 수정"
           },
-          "isDeleted": {
-            "type": "boolean",
-            "example": false
-          },
-          "deletedAt": {
+          "content": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true,
-            "example": null
-          }
-        }
-      },
-      "RefreshToken": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 1
-          },
-          "token": {
-            "type": "string",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-          },
-          "deviceInfo": {
-            "type": "string",
-            "enum": ["WEB", "IOS", "ANDROID"],
-            "example": "IOS"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-12-31T23:59:59Z"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-10-22T08:42:00Z"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true,
-            "example": "2024-10-23T09:30:00Z"
+            "required": false,
+            "example": "게시글 내용 수정"
           }
         }
       }
     }
   },
   "paths": {
-    "/user": {
+    "/auth/{LoginMethod}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/LoginMehtod"
+        }
+      ],
       "post": {
-        "summary": "Create a new user",
-        "tags": ["Users"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
-              }
-            }
-          }
-        },
+        "summary": "OAuth Login (초기 진입시 회원가입)",
+        "tags": ["Auth"],
         "responses": {
-          "201": {
-            "description": "User successfully created",
+          "200": {
+            "description": "로그인 성공",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "$ref": "#/components/schemas/SuccessLogin"
                 }
               }
             }
@@ -285,7 +134,7 @@
     },
     "/post": {
       "post": {
-        "summary": "Create a new post",
+        "summary": "게시글 작성",
         "tags": ["Posts"],
         "requestBody": {
           "required": true,
@@ -299,7 +148,33 @@
         },
         "responses": {
           "201": {
-            "description": "Post successfully created",
+            "description": "게시글 작성 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "게시글 수정",
+        "tags": ["Posts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "게시글 작성 성공",
             "content": {
               "application/json": {
                 "schema": {
