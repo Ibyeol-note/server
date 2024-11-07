@@ -2,6 +2,25 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class Posts {
+    postGet(
+        cursor: string
+        limit: number
+    ): Promise<PostGet200Response> {
+        // Business Logics
+        return {
+            // Return Data
+        };
+    }
+
+    postIdGet(
+        postId: number
+    ): Promise<Post> {
+        // Business Logics
+        return {
+            // Return Data
+        };
+    }
+
     postPost(
         createPostDto: CreatePostDto
     ): Promise<Post> {
@@ -12,7 +31,7 @@ export class Posts {
     }
 
     postPut(
-        updatePostDto: UpdatePostDto
+        createPostDto: CreatePostDto
     ): Promise<Post> {
         // Business Logics
         return {
