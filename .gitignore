@@ -36,6 +36,8 @@ lerna-debug.log*
 
 *.env
 
+openapi.json
+
 src/prisma/@generated/*
 
 tmp/*
