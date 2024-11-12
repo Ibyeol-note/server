@@ -1,5 +1,6 @@
 api/auth.service.ts
 api/posts.service.ts
+model/authLoginMethodPostRequest.ts
 model/createPostDto.ts
 model/models.ts
 model/post.ts
