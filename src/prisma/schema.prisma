@@ -22,20 +22,20 @@ model User {
   /// @format email
   /// @minLength 5
   /// @maxLength 40
-  email          String?   @unique
+  email          String?     @unique
   /// @minLength 1
   /// @maxLength 10
-  gender         String    @db.VarChar(10)
+  gender         String      @db.VarChar(10)
   /// @minLength 2
   /// @maxLength 50
-  name           String?   @db.VarChar(50)
+  name           String?     @db.VarChar(50)
   /// @format date
   birthday       String?
   /// @minLength 1
   /// @maxLength 10
   birthdayType   String?
-  loginType      LoginType
-  registrationAt DateTime  @default(now())
+  loginMethod    LoginMethod
+  registrationAt DateTime    @default(now())
 
   // Soft Delete
   isDeleted Boolean   @default(false)
@@ -161,7 +161,7 @@ enum Gender {
   NOT_CHOICE
 }
 
-enum LoginType {
+enum LoginMethod {
   NAVER
   KAKAO
   GOOGLE
