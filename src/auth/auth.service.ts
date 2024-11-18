@@ -1,34 +1,33 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginMehtod } from './enum/login-method.enum';
 import { SuccessLogin } from './interface/successLogin';
 import { AuthReader } from './implement/auth.reader';
 import { AuthException } from 'src/global/exceptions/auth-exceptions';
+import { LoginMethod } from '@prisma/client';
+import { socialLoginDto } from './dto/socialLoginDto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly authReader: AuthReader) {}
 
   async socialLogin(
-    loginMehtod: LoginMehtod,
-    accessToken: string,
+    loginMethod: LoginMethod,
+    socialLoginDto: socialLoginDto,
   ): Promise<SuccessLogin> {
-    switch (loginMehtod) {
-      case LoginMehtod.KAKAO:
-        await this.authReader.getKaKaoUserInfo(accessToken);
+    switch (loginMethod) {
+      case LoginMethod.KAKAO:
+        await this.authReader.getKaKaoUserInfo(socialLoginDto.accessToken);
         break;
-      case LoginMehtod.APPLE:
-        await this.authReader.getAppleUserInfo(accessToken);
+      case LoginMethod.APPLE:
+        await this.authReader.getAppleUserInfo(socialLoginDto.accessToken);
         break;
-
-      case LoginMehtod.NAVER:
-        await this.authReader.getNaverUserInfo(accessToken);
+      case LoginMethod.NAVER:
+        await this.authReader.getNaverUserInfo(socialLoginDto.accessToken);
         break;
       // TODO) GOOGLE LOGIN 추가시
-      // case LoginMehtod.GOOGLE:
-      // await this.authReader.getGoogleUserInfo(accessToken);
+      // case LoginMethod.GOOGLE:
+      // await this.authReader.getGoogleUserInfo(socialLoginDto.accessToken);
       // break;
       default:
-        // TODO) error code customize
         throw AuthException.INVALID_SOCIAL_LOGIN_METHOD;
     }
     return {
