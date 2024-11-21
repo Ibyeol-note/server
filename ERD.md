@@ -13,7 +13,7 @@ erDiagram
   String name "nullable"
   String birthday "nullable"
   String birthdayType "nullable"
-  LoginType loginType
+  LoginMethod loginMethod
   DateTime registrationAt
   Boolean isDeleted
   DateTime deletedAt "nullable"
@@ -87,7 +87,7 @@ erDiagram
   - `name`: 
   - `birthday`: 
   - `birthdayType`: 
-  - `loginType`: 
+  - `loginMethod`: 
   - `registrationAt`: 
   - `isDeleted`: 
   - `deletedAt`: 
