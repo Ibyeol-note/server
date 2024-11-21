@@ -8,7 +8,6 @@ export class UserService {
   constructor(private readonly authService: AuthService) {}
 
   create(createUserDto: CreateUserDto) {
-    this.authService.somaAPI();
     return 'This action adds a new user';
   }
 

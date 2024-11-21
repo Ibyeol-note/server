@@ -1,11 +1,9 @@
-import { tags } from 'typia';
-
 export interface SuccessLogin {
   accessToken?: string;
 
   refreshToken?: string;
 
-  accessTokenExp?: string & tags.Format<'date-time'>;
+  accessTokenExp?: string;
 
-  refreshTokenExp?: string & tags.Format<'date-time'>;
+  refreshTokenExp?: string;
 }

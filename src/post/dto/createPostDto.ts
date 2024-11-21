@@ -1,12 +1,9 @@
-import { tags } from 'typia';
+import { IsString } from 'class-validator';
 
-export interface CreatePostDto {
+export class CreatePostDto {
+  @IsString()
   title: string;
 
+  @IsString()
   content: string;
-
-  author: string;
-  /** 게시글 상태 */
-  status: string;
 }
-export type StatusEnum = 'published' | 'draft' | 'archived';
