@@ -53,7 +53,6 @@ jobs:
           docker stop ibyeolnote-container || true
           docker rm ibyeolnote-container || true
           docker run -d -p 80:3000 --name ibyeolnote-container $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker run -d -p 443:3000 --name ibyeolnote-container $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker image prune -a -f
           "
 
