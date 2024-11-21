@@ -1,6 +1,4 @@
-import { tags } from 'typia';
-
-export interface CreateUserDto {
+export class CreateUserDto {
   username: string;
 
   email: string;

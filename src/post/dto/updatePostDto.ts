@@ -1,10 +1,11 @@
-import { tags } from 'typia';
+import { IsOptional, IsString } from 'class-validator';
 
-export interface UpdatePostDto {
+export class UpdatePostDto {
+  @IsString()
+  @IsOptional()
   title?: string;
 
+  @IsString()
+  @IsOptional()
   content?: string;
-  /** 게시글 상태 업데이트 */
-  status?: string;
 }
-export type StatusEnum = 'published' | 'draft' | 'archived';

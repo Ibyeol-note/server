@@ -1,6 +1,8 @@
-import { tags } from 'typia';
+import { IsNumber, IsOptional } from 'class-validator';
 
-export interface User {
+export class User {
+  @IsNumber()
+  @IsOptional()
   id?: number;
 
   username?: string;
@@ -11,9 +13,9 @@ export interface User {
   /** 유저의 역할 */
   role?: string;
   /** 유저 생성 날짜 */
-  createdAt?: string & tags.Format<'date-time'>;
+  createdAt?: string;
   /** 유저 정보 수정 날짜 */
-  updatedAt?: string & tags.Format<'date-time'>;
+  updatedAt?: string;
 }
 export type StatusEnum = 'active' | 'inactive' | 'suspended';
 export type RoleEnum = 'admin' | 'user' | 'guest';
