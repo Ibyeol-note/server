@@ -1,6 +1,8 @@
 import { IsOptional, IsString, IsNumber, IsEmail, IsDate, Matches, Min, Max, MinLength, MaxLength } from 'class-validator';
 
-export class AuthLoginMethodPostRequest { 
+export class CreatePostDto { 
+    
+    @IsRequired()
     
     
     
@@ -10,7 +12,5 @@ export class AuthLoginMethodPostRequest {
     
     
     
-    
-    
-    accessToken: string;
+    content: string;
 }
