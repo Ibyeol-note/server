@@ -4,13 +4,18 @@ import { lastValueFrom } from 'rxjs';
 import { KakaoUser } from '../interface/kakao-user';
 import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthReader {
   constructor(
-    // private readonly prismaService: PrismaService,
+    private readonly prismaService: PrismaService,
     private readonly httpService: HttpService,
   ) {}
+
+  async findByID(id: number) {
+    await this.prismaService.user.findFirst({ where: { id } });
+  }
 
   async getKaKaoUserInfo(accessToken: string) {
     const kakaoUserInfoUrl = process.env.KAKAO_USER_INFO_URL;
