@@ -5,6 +5,7 @@ import { KakaoUser } from '../interface/kakao-user';
 import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthException } from 'src/global/exceptions/auth-exceptions';
 
 @Injectable()
 export class AuthReader {
@@ -24,17 +25,20 @@ export class AuthReader {
       'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
     };
 
-    const response = await lastValueFrom(
-      this.httpService.get(kakaoUserInfoUrl, {
-        headers: headers,
-      }),
-    );
+    try {
+      const response = await lastValueFrom(
+        this.httpService.get(kakaoUserInfoUrl, {
+          headers: headers,
+        }),
+      );
 
-    const data: KakaoUser = response.data;
-    if (data) {
-      return data;
-    } else {
+      const data: KakaoUser = response.data;
+      if (data) {
+        return data;
+      }
       return null;
+    } catch (error) {
+      throw AuthException.ERROR_SOCIAL_LOGIN;
     }
   }
 
@@ -57,8 +61,7 @@ export class AuthReader {
       }
       return null;
     } catch (error) {
-      console.error('Apple user info fetch error:', error);
-      return null;
+      throw AuthException.ERROR_SOCIAL_LOGIN;
     }
   }
 
@@ -82,8 +85,7 @@ export class AuthReader {
       }
       return null;
     } catch (error) {
-      console.error('Naver user info fetch error:', error);
-      return null;
+      throw AuthException.ERROR_SOCIAL_LOGIN;
     }
   }
 }
