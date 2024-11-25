@@ -8,10 +8,9 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start --watch",
-    "start:local": "nest start --watch",
+    "start:local": "NODE_ENV=dev nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "NODE_ENV=prod node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -23,8 +22,8 @@
     "docker:down": "docker-compose -f docker/local-compose.yml --env-file src/global/config/envs/.local.env down",
     "docker:exec": "docker exec -it api /bin/sh",
     "dbpush:dev": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma db push --schema=./src/prisma/schema.prisma",
-    "migrate:dev": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --name init",
-    "migrate:prod": "dotenv -e ./src/global/config/envs/.prod.env -- npx prisma migrate dev --name init",
+    "migrate:dev": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma migrate dev --schema=./src/prisma/schema.prisma",
+    "migrate:prod": "dotenv -e ./src/global/config/envs/.prod.env -- npx prisma migrate deploy --schema=./src/prisma/schema.prisma",
     "generate:prisma": "dotenv -e ./src/global/config/envs/.local.env -- npx prisma generate --schema=./src/prisma/schema.prisma",
     "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ./openapi/template --ignore-file-override ./openapi/ignore/.openapi-generator-ignore --skip-validate-spec"
   },
