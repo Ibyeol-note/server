@@ -19,20 +19,11 @@ generator markdown {
 model User {
   id Int @id @default(autoincrement())
 
-  /// @format email
-  /// @minLength 5
-  /// @maxLength 40
-  email          String?     @unique
-  /// @minLength 1
-  /// @maxLength 10
-  gender         String      @db.VarChar(10)
-  /// @minLength 2
-  /// @maxLength 50
-  name           String?     @db.VarChar(50)
-  /// @format date
-  birthday       String?
-  /// @minLength 1
-  /// @maxLength 10
+  email    String? @unique
+  gender   String  @db.VarChar(10)
+  name     String? @db.VarChar(50)
+  birthday String?
+
   birthdayType   String?
   loginMethod    LoginMethod
   registrationAt DateTime    @default(now())
@@ -53,12 +44,7 @@ model User {
 model UserProfile {
   id Int @id @default(autoincrement())
 
-  /// @minLength 2
-  /// @maxLength 20
   nickname             String               @db.VarChar(20)
-  /// @format url
-  /// @minLength 5
-  /// @maxLength 50
   instagram            String?              @db.VarChar(50)
   relationshipDecision RelationshipDecision
 
@@ -74,9 +60,6 @@ model UserProfile {
 model UserImage {
   id Int @id @default(autoincrement())
 
-  /// @format url
-  /// @minLength 5
-  /// @maxLength 255
   imageUrl String @db.VarChar(255)
 
   // Soft Delete
@@ -91,8 +74,6 @@ model UserImage {
 model RefreshToken {
   id Int @id @default(autoincrement()) @db.UnsignedInt
 
-  /// @minLength 10
-  /// @maxLength 255
   token      String     @unique @db.VarChar(255)
   deviceInfo DeviceInfo
   expiresAt  DateTime
@@ -107,7 +88,6 @@ model RefreshToken {
 model Post {
   id String @id @default(uuid())
 
-  /// @maxLength 500
   content   String?   @db.VarChar(500)
   createdAt DateTime  @default(now())
   updatedAt DateTime?
