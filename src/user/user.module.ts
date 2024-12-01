@@ -6,6 +6,7 @@ import { UserReader } from './implement/uesr.reader';
 import { UserWirter } from './implement/user.writer';
 import { UserManager } from './implement/user.manager';
 import { UserValidator } from './implement/uesr.validator';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports: [AuthModule],
@@ -19,6 +20,9 @@ import { UserValidator } from './implement/uesr.validator';
     UserWirter,
     UserManager,
     UserValidator,
+
+    //Prisma
+    PrismaService,
   ],
   exports: [UserReader, UserWirter, UserManager, UserValidator],
 })
