@@ -4,19 +4,16 @@ import { lastValueFrom } from 'rxjs';
 import { KakaoUser } from '../interface/kakao-user';
 import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthException } from 'src/global/exceptions/auth-exceptions';
+import { UserReader } from 'src/user/implement/uesr.reader';
 
 @Injectable()
 export class AuthReader {
   constructor(
-    private readonly prismaService: PrismaService,
+    // private readonly prismaService: PrismaService,
+    private readonly userReader: UserReader,
     private readonly httpService: HttpService,
   ) {}
-
-  async findByID(id: number) {
-    await this.prismaService.user.findFirst({ where: { id } });
-  }
 
   async getKaKaoUserInfo(accessToken: string) {
     const kakaoUserInfoUrl = process.env.KAKAO_USER_INFO_URL;
