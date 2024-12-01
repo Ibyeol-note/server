@@ -5,10 +5,22 @@ import { HttpModule } from '@nestjs/axios';
 import { AuthController } from './auth.controller';
 import { AuthValidator } from './implement/auth.validator';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserReader } from 'src/user/implement/uesr.reader';
 
 @Module({
   imports: [HttpModule],
-  providers: [AuthService, AuthReader, AuthValidator, PrismaService],
+  providers: [
+    //Prisma
+    PrismaService,
+
+    // Service
+    AuthService,
+
+    // Implement
+    AuthReader,
+    AuthValidator,
+    UserReader,
+  ],
   exports: [AuthService, AuthReader, AuthValidator],
   controllers: [AuthController],
 })
