@@ -21,7 +21,7 @@ export class Posts {
     }
 
     postIdGet(
-        id: number
+        postId: number
     ): Promise<Post> {
         // Business Logics
         return {
