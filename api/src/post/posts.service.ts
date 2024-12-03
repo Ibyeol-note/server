@@ -15,10 +15,8 @@ export class PostService {
     private readonly postReader: PostReader,
   ) {}
 
-  createPost(createPostDto: CreatePostDto) {
-    return {
-      // Return Data
-    };
+  async createPost(createPostDto: CreatePostDto) {
+    return await this.postWriter.create(CreatePostDto);
   }
   deletePost(postId: number) {
     // Business Logics
