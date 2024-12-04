@@ -2,7 +2,7 @@ FROM node:20.17.0-alpine
 
 WORKDIR /api
 
-COPY .. .
+COPY ../api .
 
 RUN npm install && npm run generate:prisma
 
