@@ -4,8 +4,8 @@ import { AuthReader } from './implement/auth.reader';
 import { HttpModule } from '@nestjs/axios';
 import { AuthController } from './auth.controller';
 import { AuthValidator } from './implement/auth.validator';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { UserReader } from 'src/user/implement/uesr.reader';
+import { PrismaService } from '../prisma/prisma.service';
+import { UserReader } from '../user/implement/uesr.reader';
 
 @Module({
   imports: [HttpModule],

@@ -4,8 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { KakaoUser } from '../interface/kakao-user';
 import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
-import { AuthException } from 'src/global/exceptions/auth-exceptions';
-import { UserReader } from 'src/user/implement/uesr.reader';
+import { UserReader } from 'api/src/user/implement/uesr.reader';
 
 @Injectable()
 export class AuthReader {
