@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePostDto } from './dto/createPostDto';
-import { UpdatePostDto } from './dto/updatePostDto';
+
 import { PostWriter } from './implement/post.writer';
 import { PostManager } from './implement/post.manager';
 import { PostValidator } from './implement/post.validator';
 import { PostReader } from './implement/post.reader';
+import { CreatePostDto } from './dto/createPostDto';
+import { UpdatePostDto } from './dto/updatePostDto';
 
 @Injectable()
 export class PostService {
@@ -16,7 +17,7 @@ export class PostService {
   ) {}
 
   async createPost(createPostDto: CreatePostDto) {
-    return await this.postWriter.create(CreatePostDto);
+    return await this.postWriter.create(createPostDto);
   }
   deletePost(postId: number) {
     // Business Logics

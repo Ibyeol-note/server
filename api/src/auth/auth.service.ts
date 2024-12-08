@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SuccessLogin } from './interface/successLogin';
 import { AuthReader } from './implement/auth.reader';
-import { AuthException } from 'src/global/exceptions/auth-exceptions';
+
 import { LoginMethod } from '@prisma/client';
 import { socialLoginDto } from './dto/socialLoginDto';
-import { User } from 'src/user/dto/user';
+import { AuthException } from '../global/exceptions/auth-exceptions';
+import { User } from '../user/dto/user';
 
 @Injectable()
 export class AuthService {
