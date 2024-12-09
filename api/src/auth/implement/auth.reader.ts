@@ -5,6 +5,7 @@ import { KakaoUser } from '../interface/kakao-user';
 import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
 import { UserReader } from 'api/src/user/implement/uesr.reader';
+import { AuthException } from 'api/src/global/exceptions/auth-exceptions';
 
 @Injectable()
 export class AuthReader {

@@ -14,8 +14,8 @@ async function bootstrap() {
   dotenv.config({
     path: path.resolve(
       process.env.NODE_ENV === 'prod'
-        ? './src/global/config/envs/.prod.env'
-        : './src/global/config/envs/.local.env',
+        ? './api/src/global/config/envs/.prod.env'
+        : './api/src/global/config/envs/.local.env',
     ),
   });
 
