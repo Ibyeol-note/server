@@ -8,6 +8,6 @@ export class PostWriter {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(arg: CreatePostDto) {
-    await this.prismaService.post.create({ data: { ...arg } });
+    // await this.prismaService.post.create({ data: { ...arg } });
   }
 }
