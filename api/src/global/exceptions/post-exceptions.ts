@@ -6,4 +6,9 @@ export abstract class PostException {
     '해당 게시글을 찾을 수 없습니다.',
     HttpStatus.NOT_FOUND,
   );
+
+  static FOUND = new CommonException(
+    '게시글이 존재합니다.',
+    HttpStatus.BAD_REQUEST,
+  );
 }
