@@ -6,6 +6,7 @@ import { PostValidator } from './implement/post.validator';
 import { PostReader } from './implement/post.reader';
 import { CreatePostDto } from './dto/createPostDto';
 import { UpdatePostDto } from './dto/updatePostDto';
+import { PostException } from '../global/exceptions/post-exceptions';
 
 @Injectable()
 export class PostService {
@@ -19,13 +20,14 @@ export class PostService {
   async createPost(createPostDto: CreatePostDto) {
     return await this.postWriter.create(createPostDto);
   }
-  deletePost(postId: number) {
-    // Business Logics
-    return {
-      // Return Data
-    };
+
+  async deletePost(postId: string) {
+    await this.postValidator.checkDisappearById(postId);
+
+    return await this.postManager.delete(postId);
   }
-  getPostById(postId: number) {
+
+  getPostById(postId: string) {
     // Business Logics
     return {
       // Return Data
@@ -37,7 +39,7 @@ export class PostService {
       // Return Data
     };
   }
-  updatePost(postId: number, updatePostDto: UpdatePostDto) {
+  updatePost(postId: string, updatePostDto: UpdatePostDto) {
     // Business Logics
     return {
       // Return Data
