@@ -22,7 +22,7 @@ export class PostController {
   }
 
   @Get(':id')
-  async getPostById(@Param('id') id: number) {
+  async getPostById(@Param('id') id: string) {
     return await this.postService.getPostById(id);
   }
 
@@ -36,14 +36,14 @@ export class PostController {
 
   @Put(':id')
   async updatePost(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updatePostDto: UpdatePostDto,
   ) {
     return await this.postService.updatePost(id, updatePostDto);
   }
 
   @Delete(':id')
-  async deletePost(@Param('id') id: number) {
+  async deletePost(@Param('id') id: string) {
     return await this.postService.deletePost(id);
   }
 }
