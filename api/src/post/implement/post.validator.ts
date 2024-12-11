@@ -10,8 +10,8 @@ export class PostValidator {
     const isExist = await this.prismaService.post.findFirst({
       where: { id: postId },
     });
-    if (isExist) {
-      throw PostException.FOUND;
+    if (!isExist) {
+      throw PostException.NOT_FOUND;
     }
   }
 }
