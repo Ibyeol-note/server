@@ -7,6 +7,7 @@ import { PostReader } from './implement/post.reader';
 import { CreatePostDto } from './dto/createPostDto';
 import { UpdatePostDto } from './dto/updatePostDto';
 import { PostException } from '../global/exceptions/post-exceptions';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostService {
@@ -27,12 +28,11 @@ export class PostService {
     return await this.postManager.delete(postId);
   }
 
-  getPostById(postId: string) {
-    // Business Logics
-    return {
-      // Return Data
-    };
+  async getPostById(postId: string): Promise<Post> {
+    // TODO OpenAPI Generator의 Post Model로 변경
+    return await this.postReader.findById(postId);
   }
+
   getPosts(page: number, limit: number) {
     // Business Logics
     return {
