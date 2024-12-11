@@ -39,10 +39,15 @@ export class PostService {
       // Return Data
     };
   }
-  updatePost(postId: string, updatePostDto: UpdatePostDto) {
-    // Business Logics
-    return {
-      // Return Data
-    };
+
+  async updatePost(
+    postId: string,
+    updatePostDto: UpdatePostDto,
+  ): Promise<Post> {
+    await this.postValidator.checkDisappearById(postId);
+
+    await this.postManager.update(postId, updatePostDto);
+    // TODO OpenAPI Generator의 Post Model로 변경
+    return await this.postReader.findById(postId);
   }
 }
