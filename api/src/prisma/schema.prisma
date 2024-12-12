@@ -39,6 +39,7 @@ model User {
   posts         Post[]
   postViews     PostView[]
   postLikes     PostLike[]
+  memoryStorage memoryStorage[]
 }
 
 model UserProfile {
@@ -58,6 +59,20 @@ model UserProfile {
 }
 
 model UserImage {
+  id Int @id @default(autoincrement())
+
+  imageUrl String @db.VarChar(255)
+
+  // Soft Delete
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime?
+
+  // Relation
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model memoryStorage {
   id Int @id @default(autoincrement())
 
   imageUrl String @db.VarChar(255)
