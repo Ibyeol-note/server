@@ -33,6 +33,7 @@ model User {
   deletedAt DateTime?
 
   // Relation
+  note          Note[]
   profiles      UserProfile[]
   images        UserImage[]
   refreshTokens RefreshToken[]
@@ -58,11 +59,38 @@ model UserProfile {
   user   User @relation(fields: [userId], references: [id])
 }
 
+model Note {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  content String? @db.VarChar(500)
+
+  // Relation
+  themeId Int
+  theme   Theme @relation(fields: [themeId], references: [id])
+  userId  Int
+  user    User  @relation(fields: [userId], references: [id])
+}
+
+model Theme {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  noteId Int
+  note   Note[]
+}
+
 model UserImage {
   id Int @id @default(autoincrement())
 
   imageUrl String @db.VarChar(255)
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
   // Soft Delete
   isDeleted Boolean   @default(false)
   deletedAt DateTime?
@@ -77,6 +105,8 @@ model memoryStorage {
 
   imageUrl String @db.VarChar(255)
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
   // Soft Delete
   isDeleted Boolean   @default(false)
   deletedAt DateTime?
