@@ -33,7 +33,7 @@ export class PostService {
     return await this.postReader.findById(postId);
   }
 
-  getPosts(page: number, limit: number) {
+  async getPosts(page: number, limit: number) {
     // Business Logics
     return {
       // Return Data
