@@ -34,7 +34,7 @@ model User {
 
   // Relation
   note          Note[]
-  profiles      UserProfile[]
+  profiles      UserProfile?
   images        UserImage[]
   refreshTokens RefreshToken[]
   posts         Post[]
@@ -55,7 +55,7 @@ model UserProfile {
   deletedAt DateTime?
 
   // Relation
-  userId Int
+  userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 }
 
@@ -67,11 +67,13 @@ model Note {
 
   content String? @db.VarChar(500)
 
+  fixed    Boolean   @default(false)
   // Relation
-  themeId Int
-  theme   Theme @relation(fields: [themeId], references: [id])
-  userId  Int
-  user    User  @relation(fields: [userId], references: [id])
+  themeId  Int
+  theme    Theme     @relation(fields: [themeId], references: [id])
+  userId   Int
+  user     User      @relation(fields: [userId], references: [id])
+  AIAnswer AIAnswer?
 }
 
 model Theme {
@@ -84,6 +86,15 @@ model Theme {
 
   noteId Int
   note   Note[]
+}
+
+model AIAnswer {
+  id Int @id @default(autoincrement())
+
+  content String? @db.VarChar(500)
+
+  noteId Int  @unique
+  Note   Note @relation(fields: [noteId], references: [id])
 }
 
 model UserImage {
