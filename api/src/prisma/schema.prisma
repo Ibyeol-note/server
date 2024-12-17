@@ -39,7 +39,7 @@ model User {
   refreshTokens RefreshToken[]
   posts         Post[]
   postViews     PostView[]
-  postLikes     PostLike[]
+  clipping      Clipping[]
   memoryStorage memoryStorage[]
 }
 
@@ -155,10 +155,10 @@ model Post {
   deletedAt DateTime?
 
   // Relation
-  userId Int
-  user   User       @relation(fields: [userId], references: [id])
-  views  PostView[]
-  likes  PostLike[]
+  userId   Int
+  user     User       @relation(fields: [userId], references: [id])
+  views    PostView[]
+  clipping Clipping[]
 }
 
 model PostView {
@@ -177,7 +177,7 @@ model PostView {
   user   User   @relation(fields: [userId], references: [id])
 }
 
-model PostLike {
+model Clipping {
   id Int @id @default(autoincrement()) @db.UnsignedInt
 
   createdAt DateTime @default(now())
