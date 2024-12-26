@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import * as swaggerUi from 'swagger-ui-express';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import * as yaml from 'js-yaml';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,11 +27,10 @@ async function bootstrap() {
     }),
   );
 
-  const swaggerDocument = JSON.parse(
-    readFileSync(join(process.cwd(), 'openapi.json'), 'utf8'),
+  const swaggerDocument = yaml.load(
+    readFileSync(join(process.cwd(), 'openapi.yaml'), 'utf8'),
   );
 
-  // Swagger UI 설정
   app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   await app.listen(3000);
