@@ -1,0 +1,596 @@
+openapi: 3.0.0
+info:
+  title: IbyeolNote
+  version: 1.0.0
+  description: API documentation for IbyeolNote
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    SuccessLoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        refreshToken:
+          type: string
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        accessTokenExp:
+          type: string
+          format: date-time
+          example: '2024-10-23T09:00:00Z'
+        refreshTokenExp:
+          type: string
+          format: date-time
+          example: '2024-10-23T09:00:00Z'
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        content:
+          type: string
+          example: 게시글 내용
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-10-22T09:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2024-10-23T09:00:00Z'
+        isDeleted:
+          type: boolean
+          example: false
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+    CreatePostDto:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: 새로운 게시글 내용
+    UpdatePostDto:
+      type: object
+      properties:
+        content:
+          type: string
+          example: 수정된 게시글 내용
+    AIAnswerResponse:
+      type: object
+      properties:
+        content:
+          type: string
+          example: 이 게시글에 대한 AI 생성 답변입니다.
+    MyNoteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: 노트 내용
+        createdAt:
+          type: string
+          format: date-time
+          example: '2024-10-22T09:00:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+          example: '2024-10-23T09:00:00Z'
+    CreateNoteDto:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          example: 새로운 노트 내용
+    UpdateNoteDto:
+      type: object
+      properties:
+        content:
+          type: string
+          example: 수정된 노트 내용
+    UpdateRelationshipDecisionDto:
+      type: object
+      required:
+        - relationshipDecision
+      properties:
+        relationshipDecision:
+          type: string
+          enum:
+            - HOLD_ON
+            - LET_GO
+          example: LET_GO
+    RelationshipDecisionResponse:
+      type: object
+      properties:
+        relationshipDecision:
+          type: string
+          example: LET_GO
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2024-10-23T09:00:00Z'
+    UserIdResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 123
+    GetUserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+          example: user@example.com
+        gender:
+          type: string
+          example: MALE
+        name:
+          type: string
+          nullable: true
+          example: 홍길동
+        recentPosts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: d290f1ee-6c54-4b01-90e6-d701748f0851
+              content:
+                type: string
+                example: 최근 작성된 게시글 내용
+          description: 사용자가 최근에 작성한 5개의 게시글 목록
+    GetMemoryStorage:
+      type: object
+      properties:
+        imageId:
+          type: integer
+        url:
+          type: string
+paths:
+  /auth/{LoginMethod}:
+    post:
+      summary: OAuth 로그인 (필요 시 초기 등록)
+      tags:
+        - Auth
+      parameters:
+        - name: LoginMethod
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - NAVER
+              - KAKAO
+              - GOOGLE
+              - APPLE
+            example: KAKAO
+          description: 로그인 방법
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: OAuth 액세스 토큰
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessLoginResponse'
+  /auth/me:
+    get:
+      summary: 액세스 토큰을 이용해 사용자 ID 조회
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 사용자 ID 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserIdResponse'
+        '401':
+          description: 유효하지 않거나 만료된 액세스 토큰
+  /user/{userId}:
+    get:
+      summary: 사용자 정보 및 최근 작성한 글 5개 조회
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 조회할 사용자의 ID
+      responses:
+        '200':
+          description: 사용자 정보 및 최근 작성한 글 5개 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        '404':
+          description: 사용자를 찾을 수 없음
+  /user/relationship-decision:
+    put:
+      summary: 사용자의 관계 결정 상태 수정
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRelationshipDecisionDto'
+      responses:
+        '200':
+          description: 관계 결정 상태 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipDecisionResponse'
+        '404':
+          description: 사용자를 찾을 수 없음
+  /user/memory-storage:
+    get:
+      summary: 추억 보관함 조회
+      tags:
+        - MemoryStorage
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetMemoryStorage'
+        '400':
+          description: 잘못된 요청
+    post:
+      summary: 추억 보관함 이미지 추가
+      tags:
+        - MemoryStorage
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 업로드할 이미지 파일
+              required:
+                - file
+      responses:
+        '200':
+          description: 이미지 업로드 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imageUrl:
+                    type: string
+                    example: https://example.com/uploads/image.jpg
+                    description: 업로드된 이미지의 URL
+        '400':
+          description: 업로드 실패
+  /user/memory-storage/{imageId}:
+    get:
+      summary: 추억 보관함 단일 이미지 조회
+      tags:
+        - MemoryStorage
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: imageId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 추억 보관함 단일 이미지 Id
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/GetMemoryStorage'
+        '404':
+          description: 해당 이미지 조회 실패
+    delete:
+      summary: 추억 보관함 단일 이미지 삭제
+      tags:
+        - MemoryStorage
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: imageId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: 추억 보관함 단일 이미지 Id
+      responses:
+        '204':
+          description: 추억 보관함 단일 이미지 삭제 성공
+        '404':
+          description: 해당 이미지 조회 실패
+  /post:
+    get:
+      summary: 게시글 목록 조회
+      tags:
+        - Posts
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            description: 현재 페이지에서 마지막 게시글의 ID
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            description: 페이지당 게시글 수
+      responses:
+        '200':
+          description: 게시글 목록 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostResponse'
+    post:
+      summary: 새 게시글 작성
+      tags:
+        - Posts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostDto'
+      responses:
+        '201':
+          description: 게시글 작성 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+  /post/{id}:
+    get:
+      summary: 특정 게시글 조회
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 게시글 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '404':
+          description: 게시글을 찾을 수 없음
+    put:
+      summary: 기존 게시글 수정
+      tags:
+        - Posts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostDto'
+      responses:
+        '200':
+          description: 게시글 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '404':
+          description: 게시글을 찾을 수 없음
+    delete:
+      summary: 특정 게시글 삭제
+      tags:
+        - Posts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: 게시글 삭제 성공
+        '404':
+          description: 게시글을 찾을 수 없음
+  /note/{noteId}/ai-answer:
+    get:
+      summary: 게시글에 대한 AI 답변 조회
+      tags:
+        - Note
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: noteId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: AI 답변을 조회할 게시글의 ID
+      responses:
+        '200':
+          description: AI 답변 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIAnswerResponse'
+        '404':
+          description: 게시글을 찾을 수 없거나 AI 답변이 존재하지 않음
+  /note:
+    get:
+      summary: 작성 노트 리스트 조회(추후 페이지네이션 고려)
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MyNoteResponse'
+    post:
+      summary: 노트 작성
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateNoteDto'
+      responses:
+        '201':
+          description: Note created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyNoteResponse'
+  /note/{id}:
+    get:
+      summary: 단일 노트 조회
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyNoteResponse'
+        '404':
+          description: 해당 노트를 찾을 수 없음(Invaild Note)
+    put:
+      summary: 노트 수정
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNoteDto'
+      responses:
+        '200':
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyNoteResponse'
+        '404':
+          description: 해당 노트를 찾을 수 없음(Invaild Note)
+    delete:
+      summary: 노트 삭제
+      tags:
+        - Notes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 삭제 성공
+        '404':
+          description: 해당 노트를 찾을 수 없음(Invaild Note)
