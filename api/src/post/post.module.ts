@@ -16,11 +16,12 @@ import { PrismaService } from '../prisma/prisma.service';
     PostService,
 
     // Implement
-    PostReader,
-    PostWriter,
-    PostManager,
-    PostValidator,
+    // PostReader,
+    // PostWriter,
+    // PostManager,
+    // PostValidator,
   ],
-  exports: [PostReader, PostWriter, PostManager, PostValidator],
+  // exports: [PostReader, PostWriter, PostManager, PostValidator],
+  exports: [PostService],
 })
 export class PostModule {}

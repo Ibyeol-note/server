@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -22,7 +23,7 @@ export class PostController {
   }
 
   @Get(':id')
-  async getPostById(@Param('id') id: string) {
+  async getPostById(@Param('id', ParseIntPipe) id: string) {
     return await this.postService.getPostById(id);
   }
 

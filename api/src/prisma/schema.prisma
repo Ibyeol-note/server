@@ -129,20 +129,6 @@ model memoryStorage {
   user   User @relation(fields: [userId], references: [id])
 }
 
-model RefreshToken {
-  id Int @id @default(autoincrement()) @db.UnsignedInt
-
-  token      String     @unique @db.VarChar(255)
-  deviceInfo DeviceInfo
-  expiresAt  DateTime
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?
-
-  // Relation
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-}
-
 model Post {
   id String @id @default(uuid())
 
@@ -191,6 +177,22 @@ model Clipping {
   userId Int
   post   Post   @relation(fields: [postId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model RefreshToken {
+  id Int @id @default(autoincrement()) @db.UnsignedInt
+
+  token      String     @unique @db.VarChar(255)
+  deviceInfo DeviceInfo
+  expiresAt  DateTime
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?
+
+  // Relation
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 }
 
 enum Gender {

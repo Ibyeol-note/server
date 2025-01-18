@@ -8,6 +8,7 @@ import { UserManager } from './implement/user.manager';
 import { UserValidator } from './implement/uesr.validator';
 import { AuthModule } from '../auth/auth.module';
 import { PrismaService } from '../prisma/prisma.service';
+import { PostService } from '../post/posts.service';
 
 @Module({
   imports: [AuthModule],
@@ -17,14 +18,15 @@ import { PrismaService } from '../prisma/prisma.service';
     UserService,
 
     // Implement
-    UserReader,
-    UserWirter,
-    UserManager,
-    UserValidator,
+    // UserReader,
+    // UserWirter,
+    // UserManager,
+    // UserValidator,
 
     //Prisma
     PrismaService,
   ],
-  exports: [UserReader, UserWirter, UserManager, UserValidator],
+  // exports: [UserReader, UserWirter, UserManager, UserValidator],
+  exports: [PostService],
 })
 export class UserModule {}

@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Posts {
-    postGet(
-        cursor: string
-        limit: number
-    ): Promise<Array<PostResponse>> {
+export class Notes {
+    noteGet(
+    ): Promise<Array<MyNoteResponse>> {
         // Business Logics
         return {
             // Return Data
         };
     }
 
-    postIdDelete(
-        id: string
+    noteIdDelete(
+        id: number
     ): Promise<void> {
         // Business Logics
         return {
@@ -21,28 +19,28 @@ export class Posts {
         };
     }
 
-    postIdGet(
-        id: string
-    ): Promise<PostResponse> {
+    noteIdGet(
+        id: number
+    ): Promise<MyNoteResponse> {
         // Business Logics
         return {
             // Return Data
         };
     }
 
-    postIdPut(
-        id: string
-        updatePostDto: UpdatePostDto
-    ): Promise<PostResponse> {
+    noteIdPut(
+        id: number
+        updateNoteDto: UpdateNoteDto
+    ): Promise<MyNoteResponse> {
         // Business Logics
         return {
             // Return Data
         };
     }
 
-    postPost(
-        createPostDto: CreatePostDto
-    ): Promise<PostResponse> {
+    notePost(
+        createNoteDto: CreateNoteDto
+    ): Promise<MyNoteResponse> {
         // Business Logics
         return {
             // Return Data

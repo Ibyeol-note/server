@@ -21,11 +21,11 @@
     "docker:build": "docker-compose -f docker/local-compose.yml -p ibyeol-note --env-file api/src/global/config/envs/.local.env build",
     "docker:down": "docker-compose -f docker/local-compose.yml --env-file api/src/global/config/envs/.local.env down",
     "docker:exec": "docker exec -it api /bin/sh",
-    "dbpush:dev": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma db push --schema=./src/prisma/schema.prisma",
-    "migrate:dev": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma migrate dev --schema=./src/prisma/schema.prisma",
-    "migrate:prod": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma migrate deploy --schema=./src/prisma/schema.prisma",
-    "generate:prisma": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma generate --schema=./src/prisma/schema.prisma",
-    "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.json -g typescript-nestjs -o ./openapi/codegen -t ../openapi-json/openapi/template --ignore-file-override ../openapi-json/openapi/ignore/.openapi-generator-ignore --skip-validate-spec"
+    "dbpush:dev": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma db push --schema=./api/src/prisma/schema.prisma",
+    "migrate:dev": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma migrate dev --schema=./api/src/prisma/schema.prisma",
+    "migrate:prod": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma migrate deploy --schema=./api/src/prisma/schema.prisma",
+    "generate:prisma": "dotenv -e ./api/src/global/config/envs/.db.env -- npx prisma generate --schema=./api/src/prisma/schema.prisma",
+    "openapi:generator": "npx @openapitools/openapi-generator-cli generate -i openapi.yaml -g typescript-nestjs -o ./openapi/codegen -t ../openapi-yaml/openapi/template --ignore-file-override ../openapi-yaml/openapi/ignore/.openapi-generator-ignore --skip-validate-spec"
   },
   "dependencies": {
     "@nestjs/axios": "^3.1.1",
