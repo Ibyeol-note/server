@@ -8,7 +8,6 @@ import { CreatePostDto } from './dto/createPostDto';
 import { UpdatePostDto } from './dto/updatePostDto';
 import { PostException } from '../global/exceptions/post-exceptions';
 import { Post } from '@prisma/client';
-import { PostResponse } from 'openapi/codegen/model/postResponse';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '../user/dto/user';

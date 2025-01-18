@@ -16,6 +16,7 @@ import { PostService } from '../post/posts.service';
   providers: [
     // Service
     UserService,
+    PostService,
 
     // Implement
     // UserReader,
@@ -27,6 +28,6 @@ import { PostService } from '../post/posts.service';
     PrismaService,
   ],
   // exports: [UserReader, UserWirter, UserManager, UserValidator],
-  exports: [PostService],
+  exports: [UserService],
 })
 export class UserModule {}

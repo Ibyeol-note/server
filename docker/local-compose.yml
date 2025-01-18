@@ -6,6 +6,7 @@ services:
       dockerfile: ./docker/local-dockerfile
     volumes:
       - ..:/api
+      - /api/openapi
     restart: always
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}

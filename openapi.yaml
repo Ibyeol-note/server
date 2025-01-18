@@ -226,7 +226,7 @@ components:
               type: string
               example: 'username123'
 paths:
-  /healthcheck:
+  /:
     get:
       summary: 헬스체크
       tags:
