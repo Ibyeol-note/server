@@ -73,8 +73,6 @@ components:
             image:
               type: string
               format: url
-            isBookmark:
-              type: boolean
     CreatePostDto:
       type: object
       required:
@@ -188,6 +186,11 @@ components:
           type: integer
         url:
           type: string
+    BookmarkResponse:
+      type: object
+      properties:
+        postId:
+          type: number
     CommentResponse:
       type: object
       properties:
@@ -226,14 +229,14 @@ components:
               type: string
               example: 'username123'
 paths:
-  /:
+  /healthcheck:
     get:
       summary: 헬스체크
       tags:
         - HealthCheck
       responses:
         '200':
-          description: 서버 구동 중
+          description: 로그인 성공
   /auth/{LoginMethod}:
     post:
       summary: OAuth 로그인 (필요 시 초기 등록)
@@ -420,7 +423,23 @@ paths:
         '204':
           description: 추억 보관함 단일 이미지 삭제 성공
         '404':
-          description: 해당 이미지 조회 실패
+          description: 해당 이미지 조회 실패\
+  /user/bookmark:
+    get:
+      summary: 북마크 조회
+      tags:
+        - Bookmark
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 조회 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookmarkResponse'
   /post:
     get:
       summary: 게시글 목록 조회
