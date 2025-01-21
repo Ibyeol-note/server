@@ -40,9 +40,13 @@ export class AuthService {
         throw AuthException.INVALID_SOCIAL_LOGIN_METHOD;
     }
 
+    console.log('loginMethod: ', loginMethod);
+    console.log('userInfo: ', userInfo);
     if (userInfo) {
+      // const newUser = new User();
+      // newUser.email = userInfo.
     } else {
-      const newUser = new User();
+      throw AuthException.ERROR_SOCIAL_LOGIN;
     }
 
     return {
