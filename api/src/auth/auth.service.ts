@@ -43,8 +43,8 @@ export class AuthService {
     console.log('loginMethod: ', loginMethod);
     console.log('userInfo: ', userInfo);
     if (userInfo) {
-      // const newUser = new User();
-      // newUser.email = userInfo.
+      const newUser = new User();
+      newUser.email = userInfo.
     } else {
       throw AuthException.ERROR_SOCIAL_LOGIN;
     }

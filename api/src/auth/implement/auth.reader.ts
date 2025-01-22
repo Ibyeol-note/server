@@ -6,6 +6,7 @@ import { AppleUser } from '../interface/apple-user';
 import { NaverUser } from '../interface/naver-user';
 import { UserReader } from 'api/src/user/implement/uesr.reader';
 import { AuthException } from 'api/src/global/exceptions/auth-exceptions';
+import { UserCommonProperties } from '../interface/integrate-user.interface';
 
 @Injectable()
 export class AuthReader {
@@ -30,8 +31,14 @@ export class AuthReader {
       );
 
       const data: KakaoUser = response.data;
-      if (data) {
-        return data;
+
+      const refinedUserInfo: UserCommonProperties = {
+        id: data.id,
+        email: data.kakao_account!.email,
+      };
+
+      if (refinedUserInfo) {
+        return refinedUserInfo;
       }
       return null;
     } catch (error) {
@@ -78,7 +85,10 @@ export class AuthReader {
 
       const data: NaverUser = response.data;
       if (data && data.resultcode === '00') {
-        return data;
+        const refinedUserInfo: UserCommonProperties = {
+          id: data.response.id,
+          email: data.response.email,
+        };
       }
       return null;
     } catch (error) {
