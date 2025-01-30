@@ -1,10 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { defaultEntity } from './base.entity';
 
 @Entity()
-export class UserProfile {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserProfile extends defaultEntity {
   @Column()
   nickname: string;
 
@@ -13,12 +11,6 @@ export class UserProfile {
 
   @Column()
   relationshipDecision: string;
-
-  @Column({ default: false })
-  isDeleted: boolean;
-
-  @Column({ nullable: true })
-  deletedAt: Date;
 
   @Column({ unique: true })
   userId: number;

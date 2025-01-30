@@ -1,16 +1,9 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { defaultEntity } from './base.entity';
 
 @Entity()
-export class RefreshToken {
+export class RefreshToken extends defaultEntity {
   // TODO. redis로 대체
-  @PrimaryGeneratedColumn({ unsigned: true })
-  id: number;
-
   @Column({ unique: true })
   token: string;
 
@@ -19,12 +12,6 @@ export class RefreshToken {
 
   @Column()
   expiresAt: Date;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn({ nullable: true })
-  updatedAt: Date;
 
   @Column()
   userId: number;

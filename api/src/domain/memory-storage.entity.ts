@@ -1,30 +1,10 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { defaultEntity } from './base.entity';
 
 @Entity()
-export class MemoryStorage {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class MemoryStorage extends defaultEntity {
   @Column()
   imageUrl: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn({ nullable: true })
-  updatedAt: Date;
-
-  @Column({ default: false })
-  isDeleted: boolean;
-
-  @Column({ nullable: true })
-  deletedAt: Date;
 
   @Column()
   userId: number;

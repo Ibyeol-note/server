@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthValidator } from './implement/auth.validator';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserReader } from '../user/implement/uesr.reader';
+import { TokenProvider } from './token.provider';
 
 @Module({
   imports: [HttpModule],
@@ -20,8 +21,10 @@ import { UserReader } from '../user/implement/uesr.reader';
     AuthReader,
     AuthValidator,
     UserReader,
+
+    TokenProvider,
   ],
-  exports: [AuthService, AuthReader, AuthValidator],
+  exports: [AuthService, AuthReader, AuthValidator, TokenProvider],
   controllers: [AuthController],
 })
 export class AuthModule {}

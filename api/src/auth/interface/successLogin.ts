@@ -6,4 +6,6 @@ export interface SuccessLogin {
   accessTokenExp?: string;
 
   refreshTokenExp?: string;
+
+  isFirst: boolean;
 }

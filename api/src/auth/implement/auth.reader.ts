@@ -46,7 +46,7 @@ export class AuthReader {
     }
   }
 
-  async getAppleUserInfo(accessToken: string): Promise<AppleUser | null> {
+  async getAppleUserInfo(accessToken: string) {
     const appleUserInfoUrl = process.env.APPLE_USER_INFO_URL;
     const headers = {
       Authorization: `Bearer ${accessToken}`,
@@ -61,7 +61,14 @@ export class AuthReader {
 
       const data: AppleUser = response.data;
       if (data) {
-        return data;
+        const refinedUserInfo: UserCommonProperties = {
+          id: data.sub,
+          email: data.email || null,
+          name: data.name
+            ? String(data.name.firstName) + String(data.name.lastName)
+            : null,
+        };
+        return refinedUserInfo;
       }
       return null;
     } catch (error) {
@@ -69,7 +76,7 @@ export class AuthReader {
     }
   }
 
-  async getNaverUserInfo(accessToken: string): Promise<NaverUser | null> {
+  async getNaverUserInfo(accessToken: string) {
     const naverUserInfoUrl = process.env.NAVER_USER_INFO_URL;
     const headers = {
       Authorization: `Bearer ${accessToken}`,
@@ -89,6 +96,7 @@ export class AuthReader {
           id: data.response.id,
           email: data.response.email,
         };
+        return refinedUserInfo;
       }
       return null;
     } catch (error) {

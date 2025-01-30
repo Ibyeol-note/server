@@ -1,15 +1,8 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { defaultEntity } from './base.entity';
 
 @Entity()
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends defaultEntity {
   @Column({ nullable: true, unique: true })
   email: string;
 
@@ -30,13 +23,4 @@ export class User {
 
   @Column()
   socialLoginId: string;
-
-  @CreateDateColumn()
-  registrationAt: Date;
-
-  @Column({ default: false })
-  isDeleted: boolean;
-
-  @Column({ nullable: true })
-  deletedAt: Date;
 }

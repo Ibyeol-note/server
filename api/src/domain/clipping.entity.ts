@@ -1,24 +1,8 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { defaultEntity } from './base.entity';
 
 @Entity()
-export class Clipping {
-  @PrimaryGeneratedColumn({ unsigned: true })
-  id: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Column({ default: false })
-  isDeleted: boolean;
-
-  @Column({ nullable: true })
-  deletedAt: Date;
-
+export class Clipping extends defaultEntity {
   @Column()
   postId: string;
 
