@@ -2,18 +2,16 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SuccessLogin } from './interface/successLogin';
 import { AuthReader } from './implement/auth.reader';
 
-import { LoginMethod } from '@prisma/client';
 import { socialLoginDto } from './dto/socialLoginDto';
 import { AuthException } from '../global/exceptions/auth-exceptions';
 import { User } from '../domain/user.entity';
 import { UserCommonProperties } from './interface/integrate-user.interface';
 import { UserProfile } from '../domain/user-profile.entity';
-import { PrismaService } from '../prisma/prisma.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TokenProvider } from './token.provider';
-import { UserAccessTokenPayload } from './interface/token.payload';
 import { ResponseTokenDto } from './dto/response-dto';
+import { LoginMethod } from '../domain/enum/login-method.enum';
 
 @Injectable()
 export class AuthService {

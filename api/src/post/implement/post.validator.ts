@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import { Post } from 'api/src/domain/post.entity';
 import { PostException } from 'api/src/global/exceptions/post-exceptions';
-import { PrismaService } from 'api/src/prisma/prisma.service';
 
 @Injectable()
 export class PostValidator {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+  ) {}
 
-  async checkDisappearById(postId: string) {
-    const isExist = await this.prismaService.post.findFirst({
+  async checkDisappearById(postId: number) {
+    const isExist = await this.postRepository.findOne({
       where: { id: postId },
     });
     if (!isExist) {

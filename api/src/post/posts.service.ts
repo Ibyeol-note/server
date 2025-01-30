@@ -5,27 +5,17 @@ import { PostManager } from './implement/post.manager';
 import { PostValidator } from './implement/post.validator';
 import { PostReader } from './implement/post.reader';
 import { CreatePostDto } from './dto/createPostDto';
-import { UpdatePostDto } from './dto/updatePostDto';
-import { PostException } from '../global/exceptions/post-exceptions';
-import { Post } from '@prisma/client';
-import { plainToInstance } from 'class-transformer';
-import { PrismaService } from '../prisma/prisma.service';
+
 import { User } from '../user/dto/user';
 
 @Injectable()
 export class PostService {
-  constructor(
-    // private readonly postWriter: PostWriter,
-    // private readonly postManager: PostManager,
-    // private readonly postValidator: PostValidator,
-    // private readonly postReader: PostReader,
-    private readonly prismaService: PrismaService,
-  ) {}
+  constructor() {} // private readonly postReader: PostReader, // private readonly postValidator: PostValidator, // private readonly postManager: PostManager, // private readonly postWriter: PostWriter,
 
   async createPost(createPostDto: CreatePostDto, user: User) {
-    await this.prismaService.post.create({
-      data: { ...createPostDto, userId: user.id },
-    });
+    // await this.prismaService.post.create({
+    //   data: { ...createPostDto, userId: user.id },
+    // });
     // const post = await this.prismaService.post.create({ data: {createPostDto} });
     // return plainToInstance(PostResponse, post);
   }

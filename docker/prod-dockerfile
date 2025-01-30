@@ -5,6 +5,6 @@ COPY ./api/src .
 RUN cd /api
 
 # 필요한 패키지 설치 및 dist 폴더 생성
-RUN npm install && npm run generate:prisma && npm run build
+RUN npm install && npm run build
 
 CMD npm run start:prod

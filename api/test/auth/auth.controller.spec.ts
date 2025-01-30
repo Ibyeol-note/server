@@ -1,11 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginMethod } from '@prisma/client';
-import { AuthController } from 'src/auth/auth.controller';
-import { AuthService } from 'src/auth/auth.service';
-import { socialLoginDto } from 'src/auth/dto/socialLoginDto';
-import { GlobalException } from 'src/global/exceptions/global-exceptions';
-import { EnumValidationPipe } from 'src/global/pipe/enum-validation.pipe';
 
 describe('AuthController', () => {
   let authController: AuthController;

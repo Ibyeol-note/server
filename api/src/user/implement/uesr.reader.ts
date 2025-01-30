@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'api/src/prisma/prisma.service';
 
 @Injectable()
 export class UserReader {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor() {}
 
-  async findById(id: number) {
-    return await this.prismaService.user.findFirst({ where: { id } });
-  }
+  // async findById(id: number) {
+  //   return await this.prismaService.user.findFirst({ where: { id } });
+  // }
 }

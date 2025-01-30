@@ -2,16 +2,14 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 
-import { UserReader } from './implement/uesr.reader';
-import { UserWirter } from './implement/user.writer';
-import { UserManager } from './implement/user.manager';
-import { UserValidator } from './implement/uesr.validator';
-import { AuthModule } from '../auth/auth.module';
-import { PrismaService } from '../prisma/prisma.service';
 import { PostService } from '../post/posts.service';
+import { UserProfile } from '../domain/user-profile.entity';
+import { User } from '../domain/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [AuthModule],
+  imports: [TypeOrmModule.forFeature([User, UserProfile]), AuthModule],
   controllers: [UserController],
   providers: [
     // Service
@@ -23,9 +21,6 @@ import { PostService } from '../post/posts.service';
     // UserWirter,
     // UserManager,
     // UserValidator,
-
-    //Prisma
-    PrismaService,
   ],
   // exports: [UserReader, UserWirter, UserManager, UserValidator],
   exports: [UserService],

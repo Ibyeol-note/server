@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'api/src/prisma/prisma.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Post } from 'api/src/domain/post.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PostReader {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+  ) {}
 
-  async findById(postId: string) {
-    return await this.prismaService.post.findFirst({ where: { id: postId } });
+  async findById(postId: number) {
+    return await this.postRepository.findOne({ where: { id: postId } });
   }
 }

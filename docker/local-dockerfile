@@ -2,8 +2,13 @@ FROM node:20.17.0-alpine
 
 WORKDIR /api
 
-COPY ../api .
+# package.json과 package-lock.json을 복사
+COPY ../package.json ../package-lock.json ./
 
-RUN npm install && npm run generate:prisma
+# api 디렉토리 전체를 복사
+COPY ../api ./
+
+# 패키지 설치
+RUN npm install
 
 CMD npm run start:local

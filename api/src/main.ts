@@ -11,15 +11,6 @@ import * as yaml from 'js-yaml';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Setting configuration
-  dotenv.config({
-    path: path.resolve(
-      process.env.NODE_ENV === 'prod'
-        ? './api/src/global/config/envs/.prod.env'
-        : './api/src/global/config/envs/.local.env',
-    ),
-  });
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

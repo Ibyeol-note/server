@@ -1,8 +1,8 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginMethod } from '@prisma/client';
 import { socialLoginDto } from './dto/socialLoginDto';
 import { EnumValidationPipe } from '../global/pipe/enum-validation.pipe';
+import { LoginMethod } from '../domain/enum/login-method.enum';
 
 @Controller('auth')
 export class AuthController {

@@ -4,23 +4,40 @@ import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: determineEnvFile(),
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DATABASE_HOST'),
+        port: configService.get<number>('DATABASE_PORT', 3306),
+        username: configService.get<string>('DATABASE_USERNAME'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        entities: [__dirname + '/domain/*.entity.{ts,js}'], // 엔티티 경로 지정
+        synchronize: configService.get<boolean>('TYPEORM_SYNC', true), // 개발 환경에서만 true
+      }),
+    }),
+    AuthModule,
     UserModule,
     PostModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DATABASE_HOST || 'localhost',
-      port: parseInt(process.env.DATABASE_PORT, 10) || 3306,
-      username: process.env.DATABASE_USERNAME || 'root',
-      password: process.env.DATABASE_PASSWORD || '',
-      database: process.env.DATABASE_NAME || 'test',
-      entities: [__dirname + '/domain/*.entity.{ts,js}'], // 경로를 통한 엔티티 지정
-      synchronize: true, // 개발 중에만 사용
-    }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
+
+function determineEnvFile(): string {
+  const env = process.env.NODE_ENV || 'local'; // 기본값은 'local'
+  const envPath = `./api/src/global/config/envs/.${env}.env`;
+  return envPath;
+}
