@@ -1,54 +1,52 @@
 import { Injectable } from '@nestjs/common';
-
-import { PostWriter } from './implement/post.writer';
-import { PostManager } from './implement/post.manager';
-import { PostValidator } from './implement/post.validator';
-import { PostReader } from './implement/post.reader';
+import { PostRepository } from './post.repository';
+import { plainToInstance } from 'class-transformer';
+import { Post } from '../domain/post.entity';
 import { CreatePostDto } from './dto/createPostDto';
-
-import { User } from '../user/dto/user';
+import { PostResponse } from './dto/postResponse';
+import { UpdatePostDto } from './dto/updatePostDto';
 
 @Injectable()
 export class PostService {
-  constructor() {} // private readonly postReader: PostReader, // private readonly postValidator: PostValidator, // private readonly postManager: PostManager, // private readonly postWriter: PostWriter,
+  constructor(private readonly postRepository: PostRepository) {}
 
-  async createPost(createPostDto: CreatePostDto, user: User) {
-    // await this.prismaService.post.create({
-    //   data: { ...createPostDto, userId: user.id },
-    // });
-    // const post = await this.prismaService.post.create({ data: {createPostDto} });
-    // return plainToInstance(PostResponse, post);
+  async createPost(
+    createPostDto: CreatePostDto,
+    userId: number,
+  ): Promise<PostResponse> {
+    const post = new Post();
+    post.content = createPostDto.content;
+    post.userId = userId;
+    const createdPost = await this.postRepository.create(post);
+    return plainToInstance(PostResponse, createdPost);
   }
 
-  // async deletePost(postId: string) {
-  //   await this.postValidator.checkDisappearById(postId);
+  async getPostById(postId: number): Promise<PostResponse> {
+    const post = await this.postRepository.findById(postId);
+    return plainToInstance(PostResponse, post);
+  }
 
-  //   const deletedPost = await this.postManager.delete(postId);
+  async getPosts(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<PostResponse[]> {
+    const [posts, total] = await this.postRepository.findAll({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return posts.map((post) => plainToInstance(PostResponse, post));
+  }
 
-  //   return plainToInstance(PostResponse, deletedPost);
-  // }
+  async updatePost(
+    postId: number,
+    updatePostDto: UpdatePostDto,
+  ): Promise<PostResponse> {
+    await this.postRepository.update(postId, updatePostDto);
+    const updatedPost = await this.postRepository.findById(postId);
+    return plainToInstance(PostResponse, updatedPost);
+  }
 
-  // async getPostById(postId: string): Promise<PostResponse> {
-  //   const post = await this.postReader.findById(postId);
-
-  //   return plainToInstance(PostResponse, post);
-  // }
-
-  // async getPosts(page: number, limit: number) {
-  //   // Business Logics
-  //   return {
-  //     // Return Data
-  //   };
-  // }
-
-  // async updatePost(
-  //   postId: string,
-  //   updatePostDto: UpdatePostDto,
-  // ): Promise<Post> {
-  //   await this.postValidator.checkDisappearById(postId);
-
-  //   await this.postManager.update(postId, updatePostDto);
-  //   // TODO OpenAPI Generator의 Post Model로 변경
-  //   return await this.postReader.findById(postId);
-  // }
+  async deletePost(postId: number): Promise<void> {
+    await this.postRepository.delete(postId);
+  }
 }

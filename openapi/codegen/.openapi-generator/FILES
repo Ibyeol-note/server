@@ -1,4 +1,5 @@
 api/auth.service.ts
+api/bookmark.service.ts
 api/memoryStorage.service.ts
 api/note.service.ts
 api/notes.service.ts
@@ -6,6 +7,7 @@ api/posts.service.ts
 api/user.service.ts
 model/aIAnswerResponse.ts
 model/authLoginMethodPostRequest.ts
+model/bookmarkResponse.ts
 model/commentResponse.ts
 model/commentResponseUser.ts
 model/createNoteDto.ts

@@ -1,9 +1,9 @@
 import { IsOptional, IsString, IsNumber, IsEmail, IsDate, Matches, Min, Max, MinLength, MaxLength } from 'class-validator';
 import { Expose } from 'class-transformer';
 
-export class CreateNoteDto { 
+export class BookmarkResponse { 
     
-    @IsRequired()
+    
     
     
     
@@ -14,5 +14,5 @@ export class CreateNoteDto {
     
     
     @Expose()
-    content: string;
+    postId: number;
 }

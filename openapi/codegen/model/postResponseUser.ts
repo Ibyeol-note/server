@@ -41,17 +41,4 @@ export class PostResponseUser {
     
     @Expose()
     image: string;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @Expose()
-    isBookmark: boolean;
 }

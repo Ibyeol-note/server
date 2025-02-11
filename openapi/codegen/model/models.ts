@@ -1,5 +1,6 @@
 export * from './aIAnswerResponse';
 export * from './authLoginMethodPostRequest';
+export * from './bookmarkResponse';
 export * from './commentResponse';
 export * from './commentResponseUser';
 export * from './createNoteDto';
